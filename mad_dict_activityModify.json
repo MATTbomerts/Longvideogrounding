@@ -1,0 +1,3698 @@
+{
+    "3001_21_JUMP_STREET": {
+        "duration": 6578,
+        "timestamps": [
+            [
+                175.644,
+                176.718
+            ],
+            [
+                176.321,
+                178.664
+            ],
+            [
+                179.061,
+                182.119
+            ],
+            [
+                182.119,
+                185.113
+            ]
+        ],
+        "sentences": [
+            "Now outside, SOMEONE kicks over a trashcan.",
+            "Sitting on a nearby bench, the nerd looks over.",
+            "The jock slumps down on a bench on the other side of two columns.",
+            "With tearful eyes he notices the awkward teen watching him."
+        ],
+        "left_append": 8,
+        "left": 175.644,
+        "right": 185.113,
+        "right_append": 103,
+        "total_time": 120.469,
+        "time_append": 111
+    },
+    "3002_30_MINUTES_OR_LESS": {
+        "duration": 4983.4,
+        "timestamps": [
+            [
+                163,
+                166.619
+            ],
+            [
+                208,
+                212.058
+            ],
+            [
+                217,
+                218.944
+            ],
+            [
+                220.059,
+                225.728
+            ]
+        ],
+        "sentences": [
+            "He takes out their pizzas.",
+            "He starts for his car, then turns back.",
+            "He stuffs their cash in his back pocket.",
+            "Now the Mustang drives an empty road lined with abandoned warehouses."
+        ],
+        "left_append": 24,
+        "left": 163,
+        "right": 225.728,
+        "right_append": 33,
+        "total_time": 119.72800000000001,
+        "time_append": 57
+    },
+    "3004_500_DAYS_OF_SUMMER": {
+        "duration": 5705,
+        "timestamps": [
+            [
+                157.7,
+                162.943
+            ],
+            [
+                163.043,
+                168.521
+            ],
+            [
+                174.124,
+                176.913
+            ],
+            [
+                177.013,
+                179.409
+            ]
+        ],
+        "sentences": [
+            "The boy peddles with his mother.",
+            "The girl's on a slide.",
+            "The boy eats cake messily.",
+            "The girl grins, holding a candle."
+        ],
+        "left_append": 62,
+        "left": 157.7,
+        "right": 179.409,
+        "right_append": 36,
+        "total_time": 119.709,
+        "time_append": 98
+    },
+    "3007_A_THOUSAND_WORDS": {
+        "duration": 5490.8,
+        "timestamps": [
+            [
+                167.5,
+                175.142
+            ],
+            [
+                180.5,
+                183.302
+            ],
+            [
+                192,
+                195.245
+            ],
+            [
+                246.5,
+                248.602
+            ]
+        ],
+        "sentences": [
+            "Customers wave SOMEONE to the front of the line, where two burly men glare at him.",
+            "SOMEONE takes a complimentary coffee and leaves.",
+            "He sips the coffee in a psychiatry session.",
+            "Shaking the bearded doctor's hand, SOMEONE leaves."
+        ],
+        "left_append": 13,
+        "left": 167.5,
+        "right": 248.602,
+        "right_append": 26,
+        "total_time": 120.102,
+        "time_append": 39
+    },
+    "3008_BAD_TEACHER": {
+        "duration": 5858.4,
+        "timestamps": [
+            [
+                196,
+                197.926
+            ],
+            [
+                271.816,
+                277.228
+            ],
+            [
+                278.671,
+                281.789
+            ],
+            [
+                502.5,
+                504.189
+            ]
+        ],
+        "sentences": [
+            "A Boston Market gift card.",
+            "Now she pulls up outside a modern home and parks.",
+            "SOMEONE struts inside leaving the double doors open.",
+            "Now in SOMEONE's classroom."
+        ],
+        "left_append": 0,
+        "left": 196,
+        "right": 504.189,
+        "right_append": 0,
+        "total_time": 308.189,
+        "time_append": 0
+    },
+    "3012_BRUNO": {
+        "duration": 4880.8,
+        "timestamps": [
+            [
+                168.427,
+                196.271
+            ],
+            [
+                200.932,
+                204.504
+            ],
+            [
+                209.322,
+                212.657
+            ],
+            [
+                217.087,
+                218.773
+            ]
+        ],
+        "sentences": [
+            "SOMEONE interviews SOMEONE.",
+            "He squeezes between two people at a show.",
+            "Later a model saunters past.",
+            "Now, SOMEONE tries on an undersized hat."
+        ],
+        "left_append": 51,
+        "left": 168.427,
+        "right": 218.773,
+        "right_append": 19,
+        "total_time": 120.346,
+        "time_append": 70
+    },
+    "3013_BURLESQUE": {
+        "duration": 7138.6,
+        "timestamps": [
+            [
+                161.022,
+                169.201
+            ],
+            [
+                169.473,
+                170.531
+            ],
+            [
+                176,
+                179.909
+            ],
+            [
+                180.438,
+                182.003
+            ]
+        ],
+        "sentences": [
+            "Later as the blonde packs a suitcase, the sexy dancers pump their hips.",
+            "The blonde regards a framed photo of a woman.",
+            "She leaves the trailer park behind.",
+            "She sings in the empty dive."
+        ],
+        "left_append": 58,
+        "left": 161.022,
+        "right": 182.003,
+        "right_append": 41,
+        "total_time": 119.981,
+        "time_append": 99
+    },
+    "3014_CAPTAIN_AMERICA": {
+        "duration": 7450.6,
+        "timestamps": [
+            [
+                121.214,
+                125.999
+            ],
+            [
+                160.338,
+                168.746
+            ],
+            [
+                174.661,
+                177.223
+            ],
+            [
+                182.262,
+                195.473
+            ]
+        ],
+        "sentences": [
+            "A dusting of snow covers the floor, exposed railing, and beams.",
+            "Slowly, the two men make their way toward the nose of the plane.",
+            "One man slips and staggers momentarily as he steps down a small ledge.",
+            "The men shine their lights on a desk sized object covered with snow."
+        ],
+        "left_append": 10,
+        "left": 121.214,
+        "right": 195.473,
+        "right_append": 36,
+        "total_time": 120.25900000000001,
+        "time_append": 46
+    },
+    "3016_CHASING_MAVERICKS": {
+        "duration": 6990.4,
+        "timestamps": [
+            [
+                163.965,
+                165.413
+            ],
+            [
+                166.128,
+                169.766
+            ],
+            [
+                173.256,
+                174.295
+            ],
+            [
+                174.384,
+                176.17
+            ]
+        ],
+        "sentences": [
+            "Another wave hits the rocks and his head pops out of the water.",
+            "His outstretched hands lap against the surface.",
+            "He tries to shake the salty water off his face.",
+            "The girl watches in anguish as another wave rolls over him."
+        ],
+        "left_append": 5,
+        "left": 163.965,
+        "right": 176.17,
+        "right_append": 103,
+        "total_time": 120.20499999999998,
+        "time_append": 108
+    },
+    "3017_CHRONICLE": {
+        "duration": 5371.8,
+        "timestamps": [
+            [
+                176.649,
+                202.45
+            ],
+            [
+                203.294,
+                204.458
+            ],
+            [
+                204.558,
+                214.69
+            ],
+            [
+                214.809,
+                223.628
+            ]
+        ],
+        "sentences": [
+            "Later, they drive past a forest.",
+            "The young man grins.",
+            "They pull into a bustling high school parking lot.",
+            "Now with the car parked, the camera stays on the driver."
+        ],
+        "left_append": 36,
+        "left": 176.649,
+        "right": 223.628,
+        "right_append": 37,
+        "total_time": 119.97899999999998,
+        "time_append": 73
+    },
+    "3020_DEAR_JOHN": {
+        "duration": 6462.8,
+        "timestamps": [
+            [
+                163.732,
+                166.479
+            ],
+            [
+                166.579,
+                167.974
+            ],
+            [
+                177.044,
+                180.867
+            ],
+            [
+                185.99,
+                191.397
+            ]
+        ],
+        "sentences": [
+            "The bare chested soldier watches the students halt at the end of the pier.",
+            "A live young woman with wavy, corn silk hair, sets her purse on the railing.",
+            "A boyish guy sits on the railings, sending her purse plunging into the water.",
+            "As SOMEONE jogs up the pier toward the beach."
+        ],
+        "left_append": 88,
+        "left": 163.732,
+        "right": 191.397,
+        "right_append": 4,
+        "total_time": 119.66499999999999,
+        "time_append": 92
+    },
+    "3022_DINNER_FOR_SCHMUCKS": {
+        "duration": 6843.6,
+        "timestamps": [
+            [
+                157.671,
+                167.614
+            ],
+            [
+                168.128,
+                172.801
+            ],
+            [
+                173.978,
+                176.288
+            ],
+            [
+                177.904,
+                185.045
+            ]
+        ],
+        "sentences": [
+            "Mice are posed spinning hula hoops and riding on a roundabout.",
+            "The man uses a gas lighter to light little balls that one of the bespectacled male mice is juggling.",
+            "He gives the redheaded female mouse a model fire extinguisher.",
+            "Now he airbrushes a sunbathing mouse so that it looks like a topless female mouse has a bikini line."
+        ],
+        "left_append": 57,
+        "left": 157.671,
+        "right": 185.045,
+        "right_append": 36,
+        "total_time": 120.374,
+        "time_append": 93
+    },
+    "3023_DISTRICT_9": {
+        "duration": 6736,
+        "timestamps": [
+            [
+                174,
+                180.05
+            ],
+            [
+                188,
+                193.05
+            ],
+            [
+                211,
+                215.05
+            ],
+            [
+                258,
+                266.05
+            ]
+        ],
+        "sentences": [
+            "A dusty avenue swarms with aliens.",
+            "An alien butchers a cow's head.",
+            "A young civilian.",
+            "In old video footage, a lit circle highlights an arrowhead shaped module descending."
+        ],
+        "left_append": 25,
+        "left": 174,
+        "right": 266.05,
+        "right_append": 3,
+        "total_time": 120.05000000000001,
+        "time_append": 28
+    },
+    "3025_FLIGHT": {
+        "duration": 8315.8,
+        "timestamps": [
+            [
+                181.142,
+                186.144
+            ],
+            [
+                186.344,
+                189.87
+            ],
+            [
+                194.603,
+                197.201
+            ],
+            [
+                205.029,
+                207.28
+            ]
+        ],
+        "sentences": [
+            "The woman climbs on the bed.",
+            "She straddles the man.",
+            "She puts the joint to his lips.",
+            "She gets off the bed."
+        ],
+        "left_append": 6,
+        "left": 181.142,
+        "right": 207.28,
+        "right_append": 88,
+        "total_time": 120.138,
+        "time_append": 94
+    },
+    "3028_GHOST_RIDER_SPIRIT_OF_VENGEANCE": {
+        "duration": 5725.4,
+        "timestamps": [
+            [
+                172.607,
+                177.476
+            ],
+            [
+                177.776,
+                183.826
+            ],
+            [
+                179.506,
+                182.424
+            ],
+            [
+                182.124,
+                188.224
+            ]
+        ],
+        "sentences": [
+            "SOMEONE throws the second soldier over the railing, then heads after them.",
+            "He jumps a stairway railing.",
+            "SOMEONE fires at him.",
+            "SOMEONE and SOMEONE head through a door and pull it shut."
+        ],
+        "left_append": 4,
+        "left": 172.607,
+        "right": 188.224,
+        "right_append": 100,
+        "total_time": 119.61699999999999,
+        "time_append": 104
+    },
+    "3033_HUGO": {
+        "duration": 7581.4,
+        "timestamps": [
+            [
+                171.469,
+                173.091
+            ],
+            [
+                173.115,
+                174.915
+            ],
+            [
+                174.939,
+                181.315
+            ],
+            [
+                181.415,
+                188.013
+            ]
+        ],
+        "sentences": [
+            "He jogs up a corridor.",
+            "then kicks open a coal door.",
+            "and slides down a spiraling chute.",
+            "At the bottom, he runs past damp brick walls then scurries through a labyrinth of pipes and machinery."
+        ],
+        "left_append": 14,
+        "left": 171.469,
+        "right": 188.013,
+        "right_append": 89,
+        "total_time": 119.54400000000001,
+        "time_append": 103
+    },
+    "3036_IN_TIME": {
+        "duration": 6557.2,
+        "timestamps": [
+            [
+                165.738,
+                166.773
+            ],
+            [
+                199.95,
+                203.424
+            ],
+            [
+                203.524,
+                205.414
+            ],
+            [
+                205.772,
+                209.929
+            ]
+        ],
+        "sentences": [
+            "She eyes her arm.",
+            "SOMEONE pauses on his way out.",
+            "He and his mother clasp each other's forearms, then rotate his over hers.",
+            "They watch their clocks tick rapidly on their free arms."
+        ],
+        "left_append": 24,
+        "left": 165.738,
+        "right": 209.929,
+        "right_append": 52,
+        "total_time": 120.191,
+        "time_append": 76
+    },
+    "3037_IRON_MAN2": {
+        "duration": 7475,
+        "timestamps": [
+            [
+                162.06,
+                165.842
+            ],
+            [
+                165.186,
+                168.061
+            ],
+            [
+                175.4,
+                184.057
+            ],
+            [
+                193.114,
+                195.264
+            ]
+        ],
+        "sentences": [
+            "In his father's work area, SOMEONE thumbs through diagrams and plans.",
+            "He uncovers a blueprint and studies it.",
+            "Later wearing welding goggles, SOMEONE welds pieces of metal together.",
+            "SOMEONE stops welding and lifts the goggles above his forehead."
+        ],
+        "left_append": 32,
+        "left": 162.06,
+        "right": 195.264,
+        "right_append": 55,
+        "total_time": 120.20400000000001,
+        "time_append": 87
+    },
+    "3040_JULIE_AND_JULIA": {
+        "duration": 7392.8,
+        "timestamps": [
+            [
+                161.113,
+                165.934
+            ],
+            [
+                165.166,
+                174.992
+            ],
+            [
+                170.492,
+                175.861
+            ],
+            [
+                183.545,
+                192.967
+            ]
+        ],
+        "sentences": [
+            "The car halts in front of an ivy covered building.",
+            "SOMEONE steps out of the driver's seat and views the residence.",
+            "A concierge opens double doors to a courtyard.",
+            "Now a woman packs an original copy of Mastering the Art of French Cooking into a box with more cookbooks, then thrusts it into a packed jeep."
+        ],
+        "left_append": 74,
+        "left": 161.113,
+        "right": 192.967,
+        "right_append": 14,
+        "total_time": 119.85400000000001,
+        "time_append": 88
+    },
+    "3045_LAND_OF_THE_LOST": {
+        "duration": 6101.2,
+        "timestamps": [
+            [
+                210.965,
+                215.179
+            ],
+            [
+                239.138,
+                244.394
+            ],
+            [
+                263.216,
+                267.264
+            ],
+            [
+                289.136,
+                292.806
+            ]
+        ],
+        "sentences": [
+            "SOMEONE storms off.",
+            "Three years later, at a presentation.",
+            "He cups his ear.",
+            "SOMEONE stands before a class of 12 year old."
+        ],
+        "left_append": 7,
+        "left": 210.965,
+        "right": 292.806,
+        "right_append": 31,
+        "total_time": 119.84099999999998,
+        "time_append": 38
+    },
+    "3046_LARRY_CROWNE": {
+        "duration": 5916.8,
+        "timestamps": [
+            [
+                186.826,
+                190.001
+            ],
+            [
+                192.774,
+                221.97
+            ],
+            [
+                249.324,
+                250.983
+            ],
+            [
+                251.722,
+                253.478
+            ]
+        ],
+        "sentences": [
+            "He unfastens his brace.",
+            "In apparel with a trainee.",
+            "It shows all team of executives.",
+            "He points to a crown on his mug."
+        ],
+        "left_append": 38,
+        "left": 186.826,
+        "right": 253.478,
+        "right_append": 15,
+        "total_time": 119.65200000000002,
+        "time_append": 53
+    },
+    "3050_MR_POPPERS_PENGUINS": {
+        "duration": 5661.4,
+        "timestamps": [
+            [
+                165.006,
+                168.704
+            ],
+            [
+                168.804,
+                170.883
+            ],
+            [
+                174.44,
+                181.141
+            ],
+            [
+                188.49,
+                190.018
+            ]
+        ],
+        "sentences": [
+            "A blizzard sweeps across the boy's disappointed gaze.",
+            "Daytime.",
+            "In Manhattan, a business man talks on his cell phone.",
+            "SOMEONE smells the bound contract."
+        ],
+        "left_append": 24,
+        "left": 165.006,
+        "right": 190.018,
+        "right_append": 71,
+        "total_time": 120.012,
+        "time_append": 95
+    },
+    "3051_NANNY_MCPHEE_RETURNS": {
+        "duration": 6561,
+        "timestamps": [
+            [
+                173.7,
+                176.471
+            ],
+            [
+                192.231,
+                194.181
+            ],
+            [
+                221.2,
+                224.475
+            ],
+            [
+                226.135,
+                229.172
+            ]
+        ],
+        "sentences": [
+            "The eldest listens intently.",
+            "A blonde boy vomits.",
+            "They pass a pristine white, estate house.",
+            "SOMEONE takes a deep breath."
+        ],
+        "left_append": 64,
+        "left": 173.7,
+        "right": 229.172,
+        "right_append": 1,
+        "total_time": 120.47200000000001,
+        "time_append": 65
+    },
+    "3052_NO_STRINGS_ATTACHED": {
+        "duration": 6478.8,
+        "timestamps": [
+            [
+                163,
+                167.637
+            ],
+            [
+                181.63,
+                183.504
+            ],
+            [
+                252.542,
+                254.777
+            ],
+            [
+                263,
+                265.272
+            ]
+        ],
+        "sentences": [
+            "The both stared straight ahead.",
+            "A large white fraternity house with columns on the ground, white pediment at the front.",
+            "Standing beside his buddy, SOMEONE, SOMEONE stares at SOMEONE.",
+            "SOMEONE points a massive foam hand."
+        ],
+        "left_append": 5,
+        "left": 163,
+        "right": 265.272,
+        "right_append": 13,
+        "total_time": 120.27199999999999,
+        "time_append": 18
+    },
+    "3054_PERCY_JACKSON_LIGHTENING_THIEF": {
+        "duration": 7118.2,
+        "timestamps": [
+            [
+                179,
+                184.806
+            ],
+            [
+                247,
+                255.766
+            ],
+            [
+                256,
+                259.066
+            ],
+            [
+                265.131,
+                273.214
+            ]
+        ],
+        "sentences": [
+            "With his hand on the fence.",
+            "Under his brother's glare, SOMEONE stops and faces him once more.",
+            "Revealing a flood of brilliant light.",
+            "SOMEONE walks past the door's broken pieces and down a few steps to the doorway."
+        ],
+        "left_append": 20,
+        "left": 179,
+        "right": 273.214,
+        "right_append": 6,
+        "total_time": 120.214,
+        "time_append": 26
+    },
+    "3055_PROMETHEUS": {
+        "duration": 7426.8,
+        "timestamps": [
+            [
+                172.402,
+                176.16
+            ],
+            [
+                177.398,
+                185.419
+            ],
+            [
+                185.644,
+                194.821
+            ],
+            [
+                194.919,
+                196.965
+            ]
+        ],
+        "sentences": [
+            "An enormous saucer shaped craft hovers just above the rim of the falls.",
+            "The plunging water sends up pale mist that swirls around the ship.",
+            "From a distance we watch a cloaked, hooded figure walk over a rocky bank to the waters rim.",
+            "From within the hood, a stone white human like face, with masculine features peers out through deep set eyes, with enormous dark irises."
+        ],
+        "left_append": 73,
+        "left": 172.402,
+        "right": 196.965,
+        "right_append": 22,
+        "total_time": 119.56300000000002,
+        "time_append": 95
+    },
+    "3058_RUBY_SPARKS": {
+        "duration": 6246.6,
+        "timestamps": [
+            [
+                162.841,
+                171.758
+            ],
+            [
+                171.858,
+                186.901
+            ],
+            [
+                201.677,
+                202.774
+            ],
+            [
+                202.874,
+                210.999
+            ]
+        ],
+        "sentences": [
+            "A dark haired man runs beside him.",
+            "An old woman walks beside them.",
+            "The brothers trade a wry smirk.",
+            "Later, they use weight machines."
+        ],
+        "left_append": 25,
+        "left": 162.841,
+        "right": 210.999,
+        "right_append": 47,
+        "total_time": 120.15799999999999,
+        "time_append": 72
+    },
+    "3060_SANCTUM": {
+        "duration": 6529.8,
+        "timestamps": [
+            [
+                235.116,
+                237.506
+            ],
+            [
+                271.687,
+                278.458
+            ],
+            [
+                293.064,
+                299.595
+            ],
+            [
+                327.202,
+                330.169
+            ]
+        ],
+        "sentences": [
+            "In the cockpit.",
+            "Covered valley.",
+            "Humongous hole in the Earth.",
+            "Inside the cave, a fair haired man floats in shallow water."
+        ],
+        "left_append": 13,
+        "left": 235.116,
+        "right": 330.169,
+        "right_append": 12,
+        "total_time": 120.05299999999997,
+        "time_append": 25
+    },
+    "3061_SNOW_FLOWER": {
+        "duration": 6256.6,
+        "timestamps": [
+            [
+                165.558,
+                177.298
+            ],
+            [
+                177.538,
+                181.094
+            ],
+            [
+                181.47,
+                184.062
+            ],
+            [
+                184.575,
+                186.766
+            ]
+        ],
+        "sentences": [
+            "Now, in a club, two women in old fashioned costumes perform a traditional dance with fans in front of a DJ.",
+            "Amid dancing guests, Sebastian and SOMEONE chat with their boss and a grey haired man.",
+            "Outside, a young woman in a bulky knit cap with a pompom on top makes a call on her cellphone.",
+            "She wears her hair loose around her round, soft features."
+        ],
+        "left_append": 26,
+        "left": 165.558,
+        "right": 186.766,
+        "right_append": 73,
+        "total_time": 120.208,
+        "time_append": 99
+    },
+    "3062_SORCERERS_APPRENTICE": {
+        "duration": 6543.2,
+        "timestamps": [
+            [
+                171.23,
+                173.339
+            ],
+            [
+                181,
+                186.826
+            ],
+            [
+                193.911,
+                198.938
+            ],
+            [
+                218,
+                220.574
+            ]
+        ],
+        "sentences": [
+            "SOMEONE opens up a glowing capsule.",
+            "Faces appear on it like a nesting doll.",
+            "His depiction wears Victorian suit.",
+            "SOMEONE hikes across the Serengeti."
+        ],
+        "left_append": 20,
+        "left": 171.23,
+        "right": 220.574,
+        "right_append": 51,
+        "total_time": 120.34400000000002,
+        "time_append": 71
+    },
+    "3063_SOUL_SURFER": {
+        "duration": 6387.8,
+        "timestamps": [
+            [
+                169.063,
+                173.154
+            ],
+            [
+                215.918,
+                218.905
+            ],
+            [
+                325.392,
+                328.522
+            ],
+            [
+                323,
+                325.392
+            ]
+        ],
+        "sentences": [
+            "Now standing together on one surfboard, the girls ride a gentle wave.",
+            "The man grins as he spots the girl.",
+            "Sitting on her bed, SOMEONE gazes out a window as she plays her ukulele.",
+            "A Shar Pei rest its chin on her leg."
+        ],
+        "left_append": 0,
+        "left": 169.063,
+        "right": 328.522,
+        "right_append": 0,
+        "total_time": 159.459,
+        "time_append": 0
+    },
+    "3067_THE_ART_OF_GETTING_BY": {
+        "duration": 4997.8,
+        "timestamps": [
+            [
+                179.821,
+                186.477
+            ],
+            [
+                185.205,
+                196.854
+            ],
+            [
+                196.854,
+                202.678
+            ],
+            [
+                239.457,
+                247.185
+            ]
+        ],
+        "sentences": [
+            "In a classroom the teenage boy draws in his textbook, sketching a mustached man with a worried face.",
+            "As a matronly teacher makes her way down an aisle other students hand her their assignments.",
+            "The young artist sits concentrating, shading a shirt collar under the worried face.",
+            "SOMEONE collects his things and heads out."
+        ],
+        "left_append": 14,
+        "left": 179.821,
+        "right": 247.185,
+        "right_append": 39,
+        "total_time": 120.364,
+        "time_append": 53
+    },
+    "3070_THE_CALL": {
+        "duration": 5654,
+        "timestamps": [
+            [
+                177,
+                184.863
+            ],
+            [
+                232.5,
+                236.646
+            ],
+            [
+                236.646,
+                241.826
+            ],
+            [
+                241.826,
+                244.402
+            ]
+        ],
+        "sentences": [
+            "In the high ceilinged modern facility, a slender woman with short, curly hair swivels in her chair.",
+            "She raises her arms as a message flashes on her screen: Call disconnected.",
+            "The 911 operator locks her hands behind her head and leans back in her chair.",
+            "Looking at her computer, she exhales deeply and sets her arms down."
+        ],
+        "left_append": 25,
+        "left": 177,
+        "right": 244.402,
+        "right_append": 28,
+        "total_time": 120.40199999999999,
+        "time_append": 53
+    },
+    "3072_THE_GIRL_WITH_THE_DRAGON_TATTOO": {
+        "duration": 9488.8,
+        "timestamps": [
+            [
+                201.579,
+                205.741
+            ],
+            [
+                206.379,
+                210.953
+            ],
+            [
+                212.152,
+                216.964
+            ],
+            [
+                221.303,
+                238.062
+            ]
+        ],
+        "sentences": [
+            "The rugged man descends courthouse stairs.",
+            "and encounters several journalists.",
+            "They follow outside.",
+            "He walks off in the rain."
+        ],
+        "left_append": 6,
+        "left": 201.579,
+        "right": 238.062,
+        "right_append": 78,
+        "total_time": 120.483,
+        "time_append": 84
+    },
+    "3073_THE_GUILT_TRIP": {
+        "duration": 5738,
+        "timestamps": [
+            [
+                159.506,
+                164.054
+            ],
+            [
+                171.14,
+                185.898
+            ],
+            [
+                200.89,
+                203.225
+            ],
+            [
+                230,
+                232.467
+            ]
+        ],
+        "sentences": [
+            "In an office building.",
+            "A receptionist shows SOMEONE into a conference room, where three executives wait around a large table.",
+            "The executives stare at him blankly.",
+            "From his briefcase, he pulls out a coconut."
+        ],
+        "left_append": 22,
+        "left": 159.506,
+        "right": 232.467,
+        "right_append": 25,
+        "total_time": 119.96100000000001,
+        "time_append": 47
+    },
+    "3075_THE_SITTER": {
+        "duration": 5225,
+        "timestamps": [
+            [
+                330.915,
+                333.099
+            ],
+            [
+                393,
+                395.429
+            ],
+            [
+                398.593,
+                400.491
+            ],
+            [
+                414.17,
+                415.407
+            ]
+        ],
+        "sentences": [
+            "She blows him a kiss and pats his cheeks.",
+            "She tilts her head staring meaningfully at SOMEONE.",
+            "She lifts her brows.",
+            "SOMEONE shakes his head."
+        ],
+        "left_append": 29,
+        "left": 330.915,
+        "right": 415.407,
+        "right_append": 7,
+        "total_time": 120.49199999999996,
+        "time_append": 36
+    },
+    "3076_THE_SOCIAL_NETWORK": {
+        "duration": 7227.6,
+        "timestamps": [
+            [
+                322.648,
+                329.434
+            ],
+            [
+                333.395,
+                341.787
+            ],
+            [
+                341.787,
+                356.535
+            ],
+            [
+                369.085,
+                376.343
+            ]
+        ],
+        "sentences": [
+            "Now, SOMEONE exits the Thirsty Scholar Pub into the night.",
+            "Now, a stately brick facade inset with white pilasters.",
+            "Opposite the building, SOMEONE passes under its overhang.",
+            "SOMEONE trots alongside a brick wall as he carries a backpack over one shoulder."
+        ],
+        "left_append": 60,
+        "left": 322.648,
+        "right": 376.343,
+        "right_append": 6,
+        "total_time": 119.695,
+        "time_append": 66
+    },
+    "3078_THE_WATCH": {
+        "duration": 6117.4,
+        "timestamps": [
+            [
+                159,
+                162.438
+            ],
+            [
+                183.793,
+                185.726
+            ],
+            [
+                194.074,
+                199.458
+            ],
+            [
+                199.458,
+                207.654
+            ]
+        ],
+        "sentences": [
+            "The manager presses a button on the tall man's glasses.",
+            "The tall man slaps the manager's rear.",
+            "At night, the store's lights shut off and the metal security door rolls down.",
+            "As the manager closes up, a chubby security guard arrives."
+        ],
+        "left_append": 0,
+        "left": 159,
+        "right": 207.654,
+        "right_append": 71,
+        "total_time": 119.654,
+        "time_append": 71
+    },
+    "3079_THINK_LIKE_A_MAN": {
+        "duration": 7323.4,
+        "timestamps": [
+            [
+                164.012,
+                166.586
+            ],
+            [
+                166.586,
+                170.347
+            ],
+            [
+                264,
+                266.634
+            ],
+            [
+                302,
+                308.279
+            ]
+        ],
+        "sentences": [
+            "Opening it, she finds earrings inside.",
+            "Stifling a disappointed look, she holds them up and forces a grin.",
+            "His five friends all turn and stare at him.",
+            "Cooking in her kitchen, SOMEONE gets a text: Mind if I hang with the guys? I'll pick up some pizza on the way home."
+        ],
+        "left_append": 0,
+        "left": 164.012,
+        "right": 308.279,
+        "right_append": 0,
+        "total_time": 144.267,
+        "time_append": 0
+    },
+    "3081_THOR": {
+        "duration": 6889.2,
+        "timestamps": [
+            [
+                163.1,
+                170.657
+            ],
+            [
+                170.657,
+                173.161
+            ],
+            [
+                173.161,
+                175.999
+            ],
+            [
+                175.999,
+                178.415
+            ]
+        ],
+        "sentences": [
+            "SOMEONE grabs the steering wheel with one hand, lightning arcs from the spinning column of dark vapor and strikes the ground around the truck.",
+            "As the two women wrestle for control, the black haired woman applies the brakes.",
+            "The truck strikes a man who appears out of the fog.",
+            "The truck spins to a stop."
+        ],
+        "left_append": 3,
+        "left": 163.1,
+        "right": 178.415,
+        "right_append": 102,
+        "total_time": 120.315,
+        "time_append": 105
+    },
+    "3082_TITANIC1": {
+        "duration": 11690.2,
+        "timestamps": [
+            [
+                6648.226,
+                6651.887
+            ],
+            [
+                6651.987,
+                6655.069
+            ],
+            [
+                6656.744,
+                6666.209
+            ],
+            [
+                6672.391,
+                6676.025
+            ]
+        ],
+        "sentences": [
+            "SOMEONE turns to her two maids.",
+            "The maids leave.",
+            "SOMEONE stops SOMEONE as he wanders past.",
+            "SOMEONE pulls SOMEONE aside."
+        ],
+        "left_append": 88,
+        "left": 6648.226,
+        "right": 6676.025,
+        "right_append": 4,
+        "total_time": 119.79899999999998,
+        "time_append": 92
+    },
+    "3083_TITANIC2": {
+        "duration": 11690.2,
+        "timestamps": [
+            [
+                160,
+                173.415
+            ],
+            [
+                173.615,
+                181.888
+            ],
+            [
+                181.988,
+                183.088
+            ],
+            [
+                199.523,
+                201.883
+            ]
+        ],
+        "sentences": [
+            "The sub moves forward, stirring up clouds of sediment as the second sub follows close behind.",
+            "The brown haired man films himself with a camcorder.",
+            "as he stares out a window at the wreck.",
+            "The man smiles at a bearded crewmate."
+        ],
+        "left_append": 37,
+        "left": 160,
+        "right": 201.883,
+        "right_append": 41,
+        "total_time": 119.88300000000001,
+        "time_append": 78
+    },
+    "3084_TOOTH_FAIRY": {
+        "duration": 6089.2,
+        "timestamps": [
+            [
+                166.17,
+                167.65
+            ],
+            [
+                168.974,
+                171.266
+            ],
+            [
+                171.366,
+                174.446
+            ],
+            [
+                174.546,
+                178.976
+            ]
+        ],
+        "sentences": [
+            "He lowers his hand from his heart.",
+            "SOMEONE enters the penalty box.",
+            "where he sits on a waiting recliner.",
+            "puts his feet up, and rests his hands behind his head."
+        ],
+        "left_append": 49,
+        "left": 166.17,
+        "right": 178.976,
+        "right_append": 58,
+        "total_time": 119.80600000000001,
+        "time_append": 107
+    },
+    "3085_TRUE_GRIT": {
+        "duration": 6620.8,
+        "timestamps": [
+            [
+                156.947,
+                166.972
+            ],
+            [
+                167.072,
+                175.717
+            ],
+            [
+                175.817,
+                182.376
+            ],
+            [
+                182.476,
+                192.852
+            ]
+        ],
+        "sentences": [
+            "SOMEONE peers out of the window at a sprawling western town.",
+            "Black smoke billows as the train rolls to a stop at the end of the line.",
+            "SOMEONE and SOMEONE climb down from the train.",
+            "The train reverses away."
+        ],
+        "left_append": 30,
+        "left": 156.947,
+        "right": 192.852,
+        "right_append": 54,
+        "total_time": 119.905,
+        "time_append": 84
+    },
+    "3087_WE_BOUGHT_A_ZOO": {
+        "duration": 7435,
+        "timestamps": [
+            [
+                213.337,
+                215.575
+            ],
+            [
+                215.575,
+                217.809
+            ],
+            [
+                217.809,
+                218.951
+            ],
+            [
+                224.198,
+                226.128
+            ]
+        ],
+        "sentences": [
+            "They arrive at school.",
+            "As SOMEONE's son slings his backpack over his shoulder, a strap breaks.",
+            "His books fall out.",
+            "He takes his daughter's hand."
+        ],
+        "left_append": 27,
+        "left": 213.337,
+        "right": 226.128,
+        "right_append": 80,
+        "total_time": 119.791,
+        "time_append": 107
+    },
+    "3089_XMEN_FIRST_CLASS": {
+        "duration": 7903.2,
+        "timestamps": [
+            [
+                162.272,
+                164.704
+            ],
+            [
+                164.804,
+                170.137
+            ],
+            [
+                177.53,
+                179.757
+            ],
+            [
+                185.116,
+                188.543
+            ]
+        ],
+        "sentences": [
+            "Finding light spilling from an open door.",
+            "he ventures through and finds a woman at a refrigerator.",
+            "The boy lingers, staring at her.",
+            "She leans forward with an inviting smile."
+        ],
+        "left_append": 33,
+        "left": 162.272,
+        "right": 188.543,
+        "right_append": 61,
+        "total_time": 120.27100000000002,
+        "time_append": 94
+    },
+    "3091_ZOMBIELAND": {
+        "duration": 5262.6,
+        "timestamps": [
+            [
+                161.843,
+                166.878
+            ],
+            [
+                166.978,
+                169.833
+            ],
+            [
+                176.81,
+                181.365
+            ],
+            [
+                183.386,
+                185.465
+            ]
+        ],
+        "sentences": [
+            "Little girl zombies cling to her car as she speeds across an empty lot.",
+            "Bumps and turns knock them off.",
+            "The woman hits a truck and flies through her windshield.",
+            "She skids across the road past the words, Rule Number 4, seat belts."
+        ],
+        "left_append": 62,
+        "left": 161.843,
+        "right": 185.465,
+        "right_append": 34,
+        "total_time": 119.62200000000001,
+        "time_append": 96
+    },
+    "0001_American_Beauty": {
+        "duration": 7300.4,
+        "timestamps": [
+            [
+                51.926,
+                54.129
+            ],
+            [
+                56.224,
+                63.394
+            ],
+            [
+                74.635,
+                96.38
+            ],
+            [
+                97.227,
+                98.586
+            ]
+        ],
+        "sentences": [
+            "Her mind wanders for a beat.",
+            "SOMEONE looks at us and sits up.",
+            "We are FLYING above suburban America, DESCENDING SLOWLY toward a tree lined street.",
+            "We are looking down at a king sized BED from OVERHEAD: SOMEONE lies sleeping amidst expensive bed linens, face down, wearing PAJAMAS."
+        ],
+        "left_append": 40,
+        "left": 51.926,
+        "right": 98.586,
+        "right_append": 33,
+        "total_time": 119.66,
+        "time_append": 73
+    },
+    "0004_Charade": {
+        "duration": 6783,
+        "timestamps": [
+            [
+                251.065,
+                252.687
+            ],
+            [
+                257.232,
+                258.347
+            ],
+            [
+                259.943,
+                260.549
+            ],
+            [
+                281.608,
+                282.529
+            ]
+        ],
+        "sentences": [
+            "SOMEONE, French, attractive, blonde, in her early thirties, comes from the railing of the sun deck to join people.",
+            "SOMEONE scampers off, content to have gotten off so lightly.",
+            "SOMEONE notices SOMEONE's lunch which consists of cold chicken, potato salad, rolls and butter, wine and coffee.",
+            "SOMEONE picks up a chicken leg and starts off."
+        ],
+        "left_append": 3,
+        "left": 251.065,
+        "right": 282.529,
+        "right_append": 86,
+        "total_time": 120.464,
+        "time_append": 89
+    },
+    "0005_Chinatown": {
+        "duration": 7832.2,
+        "timestamps": [
+            [
+                163.365,
+                168.715
+            ],
+            [
+                174.532,
+                177.077
+            ],
+            [
+                177.271,
+                178.417
+            ],
+            [
+                179.354,
+                179.892
+            ]
+        ],
+        "sentences": [
+            "SOMEONE reaches into his desk and pulls out a shot glass, quickly selects a cheaper bottle of bourbon from several fifths of more expensive whiskeys.",
+            "SOMEONE pours a large shot.",
+            "He shoves the glass across his desk toward Curly.",
+            "Curly stares dumbly at it."
+        ],
+        "left_append": 67,
+        "left": 163.365,
+        "right": 179.892,
+        "right_append": 36,
+        "total_time": 119.52699999999999,
+        "time_append": 103
+    },
+    "0007_DIE_NACHT_DES_JAEGERS": {
+        "duration": 5596,
+        "timestamps": [
+            [
+                149.347,
+                152.333
+            ],
+            [
+                190.374,
+                192.225
+            ],
+            [
+                192.598,
+                196.602
+            ],
+            [
+                197.336,
+                200.37
+            ]
+        ],
+        "sentences": [
+            "We approach a riverside village.",
+            "CENTERING on open touring car, as it drives along a river road.",
+            "We STOOP LOW towards the car.",
+            "He is the driver of the car."
+        ],
+        "left_append": 42,
+        "left": 149.347,
+        "right": 200.37,
+        "right_append": 27,
+        "total_time": 120.023,
+        "time_append": 69
+    },
+    "0008_Fargo": {
+        "duration": 5895,
+        "timestamps": [
+            [
+                312.666,
+                317.37
+            ],
+            [
+                317.883,
+                322.058
+            ],
+            [
+                396.184,
+                397.462
+            ],
+            [
+                399.964,
+                405.215
+            ]
+        ],
+        "sentences": [
+            "They stare at him.",
+            "An awkward beat.",
+            "SOMEONE enters through the kitchen door, in a parka and a red plaid SOMEONE hat.",
+            "He is carrying a bag of groceries which he deposits on the kitchen counter."
+        ],
+        "left_append": 25,
+        "left": 312.666,
+        "right": 405.215,
+        "right_append": 2,
+        "total_time": 119.54899999999998,
+        "time_append": 27
+    },
+    "0009_Forrest_Gump": {
+        "duration": 8526.4,
+        "timestamps": [
+            [
+                204.067,
+                211.045
+            ],
+            [
+                211.045,
+                213.462
+            ],
+            [
+                223.574,
+                244.85
+            ],
+            [
+                245.364,
+                270.333
+            ]
+        ],
+        "sentences": [
+            "He opens a box of chocolates and holds it out for the nurse.",
+            "The nurse shakes her head, a bit apprehensive about this strange man next to her.",
+            "SOMEONE eats a chocolate as he looks down at the nurse's shoes.",
+            "The black woman stares at SOMEONE as he looks down at his own shoes."
+        ],
+        "left_append": 43,
+        "left": 204.067,
+        "right": 270.333,
+        "right_append": 11,
+        "total_time": 120.26600000000002,
+        "time_append": 54
+    },
+    "0010_Frau_Ohne_Gewissen": {
+        "duration": 6462.4,
+        "timestamps": [
+            [
+                151.575,
+                153.938
+            ],
+            [
+                154.038,
+                155.518
+            ],
+            [
+                155.626,
+                159.001
+            ],
+            [
+                161.214,
+                162.456
+            ]
+        ],
+        "sentences": [
+            "SOMEONE walks in past him without answering.",
+            "SOMEONE is walking towards elevator.",
+            "Night watchman looks after him, relocks door, follows to elevator.",
+            "SOMEONE enters elevator."
+        ],
+        "left_append": 2,
+        "left": 151.575,
+        "right": 162.456,
+        "right_append": 107,
+        "total_time": 119.881,
+        "time_append": 109
+    },
+    "0011_Gandhi": {
+        "duration": 11474.8,
+        "timestamps": [
+            [
+                150.733,
+                153.355
+            ],
+            [
+                153.355,
+                157.218
+            ],
+            [
+                157.218,
+                159.702
+            ],
+            [
+                159.702,
+                161.358
+            ]
+        ],
+        "sentences": [
+            "In contrast to those about him, there is tension in SOMEONE's face, an air of danger in his movements.",
+            "He glances at two policemen who are talking casually, absorbed in their own gossip  then he looks back at another Tonga that pulls up just behind his.",
+            "Two young men (People) meet SOMEONE's gaze, and again we get the sense of imminent danger.",
+            "They descend and pay their driver absently, their eyes watching the crowd."
+        ],
+        "left_append": 95,
+        "left": 150.733,
+        "right": 161.358,
+        "right_append": 14,
+        "total_time": 119.625,
+        "time_append": 109
+    },
+    "0012_Get_Shorty": {
+        "duration": 6297,
+        "timestamps": [
+            [
+                27.005,
+                29.475
+            ],
+            [
+                33.076,
+                36.226
+            ],
+            [
+                43.155,
+                45.491
+            ],
+            [
+                56.683,
+                58.479
+            ]
+        ],
+        "sentences": [
+            "SOMEONE watches a woman on the sidewalk pause to tighten the scarf around her neck.",
+            "SOMEONE turns and studies SOMEONE a moment.",
+            "Then, SOMEONE looks at him.",
+            "As he gets up from the table, the other men around the table follow his lead as he finishes up some jokes."
+        ],
+        "left_append": 23,
+        "left": 27.005,
+        "right": 58.479,
+        "right_append": 66,
+        "total_time": 120.474,
+        "time_append": 89
+    },
+    "0016_O_Brother_Where_Art_Thou": {
+        "duration": 6429.8,
+        "timestamps": [
+            [
+                315.361,
+                318.014
+            ],
+            [
+                318.87,
+                325.178
+            ],
+            [
+                326.406,
+                330.128
+            ],
+            [
+                330.128,
+                332.916
+            ]
+        ],
+        "sentences": [
+            "The hobos stare.",
+            "SOMEONE gives an ingratiating smile as, behind him, the second convict starts to haul himself into the boxcar, the third convict still keeping pace outside.",
+            "The convict running outside the boxcar door stumbles and disappears and the middle convict is yanked out immediately after.",
+            "SOMEONE, just finishing his speech, flips forward in turn, smashes his chin onto the floor and is sucked out the open doorway, his clawing fingernails leaving parallel grooves on the boxcar floorboards."
+        ],
+        "left_append": 4,
+        "left": 315.361,
+        "right": 332.916,
+        "right_append": 98,
+        "total_time": 119.555,
+        "time_append": 102
+    },
+    "0017_Pianist": {
+        "duration": 8936.4,
+        "timestamps": [
+            [
+                119.57,
+                123.841
+            ],
+            [
+                123.841,
+                128.435
+            ],
+            [
+                136.24,
+                137.437
+            ],
+            [
+                137.437,
+                138.684
+            ]
+        ],
+        "sentences": [
+            "He turns, to see an extremely pretty young woman gazing adoringly at him while they are jostled and shoved.",
+            "His eyes light up.",
+            "SOMEONE pushes in beside them and takes her arm.",
+            "SOMEONE, pulling SOMEONE, fights his way down the stairs."
+        ],
+        "left_append": 27,
+        "left": 119.57,
+        "right": 138.684,
+        "right_append": 74,
+        "total_time": 120.114,
+        "time_append": 101
+    },
+    "0019_Pulp_Fiction": {
+        "duration": 9260.6,
+        "timestamps": [
+            [
+                60.1,
+                63.104
+            ],
+            [
+                64.132,
+                67.374
+            ],
+            [
+                67.374,
+                71.219
+            ],
+            [
+                70.625,
+                71.388
+            ]
+        ],
+        "sentences": [
+            "The boy and girl laugh, their laughter putting a pause in there, back and forth.",
+            "A WAITRESS comes by with a pot of coffee.",
+            "The Waitress pours the Young Woman's coffee.",
+            "The Young Man lights up another cigarette."
+        ],
+        "left_append": 59,
+        "left": 60.1,
+        "right": 71.388,
+        "right_append": 50,
+        "total_time": 120.28800000000001,
+        "time_append": 109
+    },
+    "0022_Reservoir_Dogs": {
+        "duration": 5950.4,
+        "timestamps": [
+            [
+                132.048,
+                140.038
+            ],
+            [
+                226.477,
+                231.107
+            ],
+            [
+                231.816,
+                233.194
+            ],
+            [
+                251.561,
+                253.151
+            ]
+        ],
+        "sentences": [
+            "The fellas crack up.",
+            "They all mutter equivalents.",
+            "SOMEONE stands up.",
+            "SOMEONE shoots SOMEONE with his finger."
+        ],
+        "left_append": 0,
+        "left": 132.048,
+        "right": 253.151,
+        "right_append": 0,
+        "total_time": 121.10300000000001,
+        "time_append": 0
+    },
+    "0028_The_Crying_Game": {
+        "duration": 6698.4,
+        "timestamps": [
+            [
+                154.601,
+                157.744
+            ],
+            [
+                191.56,
+                193.927
+            ],
+            [
+                197.973,
+                198.893
+            ],
+            [
+                196.912,
+                198.659
+            ]
+        ],
+        "sentences": [
+            "He puts his arm around her and drags her on.",
+            "He comes to a small canvas tent with a sign on it  TOILET.",
+            "He holds her hand.",
+            "SOMEONE walks inside the canvas flap and vanishes from sight."
+        ],
+        "left_append": 36,
+        "left": 154.601,
+        "right": 198.893,
+        "right_append": 40,
+        "total_time": 120.292,
+        "time_append": 76
+    },
+    "0029_The_Graduate": {
+        "duration": 6363.6,
+        "timestamps": [
+            [
+                32.159,
+                36.748
+            ],
+            [
+                42.288,
+                49.092
+            ],
+            [
+                49.092,
+                50.861
+            ],
+            [
+                53.793,
+                55.027
+            ]
+        ],
+        "sentences": [
+            "His eyes open suddenly.",
+            "PULL BACK SLOWLY from a CLOSEUP of a television screen with snow on it to reveal a long row of television sets along the ceiling of the aircraft.",
+            "PULL BACK from the CLOSEUP of SOMEONE to reveal a row of passengers staring straight ahead, their headsets on.",
+            "SOMEONE has not moved."
+        ],
+        "left_append": 16,
+        "left": 32.159,
+        "right": 55.027,
+        "right_append": 81,
+        "total_time": 119.868,
+        "time_append": 97
+    },
+    "0030_The_Hustler": {
+        "duration": 8085,
+        "timestamps": [
+            [
+                30.725,
+                42
+            ],
+            [
+                49.847,
+                51.475
+            ],
+            [
+                52.16,
+                52.825
+            ],
+            [
+                53.415,
+                54.55
+            ]
+        ],
+        "sentences": [
+            "SOMEONE leaves the car parked at the gas station and heads for the bar.",
+            "Armstead's is a typical small town pool hall.",
+            "It has a bar, a short order counter, a skee ball machine, and pool tables for small, friendly games.",
+            "The few people in Armstead's this day are not playing; they sit and read the papers."
+        ],
+        "left_append": 19,
+        "left": 30.725,
+        "right": 54.55,
+        "right_append": 77,
+        "total_time": 119.82499999999999,
+        "time_append": 96
+    },
+    "0038_Psycho": {
+        "duration": 6545.6,
+        "timestamps": [
+            [
+                198.86,
+                210.168
+            ],
+            [
+                210.168,
+                218.606
+            ],
+            [
+                262.47,
+                264.756
+            ],
+            [
+                264.38,
+                272.622
+            ]
+        ],
+        "sentences": [
+            "SOMEONE looks at his smile, has to respond, pulls him to her, kisses him.",
+            "Then, and without breaking the kiss, she swings her legs over the side of the bed, toe searches around, finds her shoes, slips her feet into searches them.",
+            "And finally pulls away and sits up.",
+            "She rises, goes to the bureau, takes a pair of small earrings out of her bag, begins putting them on, not bothering or perhaps not wanting to look at herself in the mirror."
+        ],
+        "left_append": 24,
+        "left": 198.86,
+        "right": 272.622,
+        "right_append": 22,
+        "total_time": 119.762,
+        "time_append": 46
+    },
+    "0041_The_Sixth_Sense": {
+        "duration": 6444,
+        "timestamps": [
+            [
+                283.164,
+                286.314
+            ],
+            [
+                291.768,
+                293.301
+            ],
+            [
+                293.301,
+                294.69
+            ],
+            [
+                264.188,
+                277.857
+            ]
+        ],
+        "sentences": [
+            "SOMEONE points to the HUGE FRAMED CERTIFICATE propped up on a dining room chair.",
+            "It's printed on aged parchment type paper.",
+            "The frame is a polished mahogany.",
+            "He slips on the sweatshirt."
+        ],
+        "left_append": 87,
+        "left": 264.188,
+        "right": 294.69,
+        "right_append": 2,
+        "total_time": 119.50200000000001,
+        "time_append": 89
+    },
+    "0043_Thelma_and_Luise": {
+        "duration": 7776.8,
+        "timestamps": [
+            [
+                209.25,
+                210.576
+            ],
+            [
+                216.549,
+                221.651
+            ],
+            [
+                228.957,
+                230.423
+            ],
+            [
+                258.548,
+                259.188
+            ]
+        ],
+        "sentences": [
+            "SOMEONE has the phone tucked under her chin, as she cuts out coupons from the newspaper and pins them on a bulletin board already covered with them.",
+            "SOMEONE goes through the living room to the bottom of the stairs and leans on the banister.",
+            "SOMEONE comes trotting down the stairs.",
+            "SOMEONE is checking himself out in the hall mirror, and it's obvious he likes what he sees."
+        ],
+        "left_append": 45,
+        "left": 209.25,
+        "right": 259.188,
+        "right_append": 25,
+        "total_time": 119.93799999999999,
+        "time_append": 70
+    },
+    "0046_Chasing_Amy": {
+        "duration": 6789.2,
+        "timestamps": [
+            [
+                147.225,
+                170.432
+            ],
+            [
+                183.27,
+                185.363
+            ],
+            [
+                184.14,
+                187.728
+            ],
+            [
+                185.958,
+                187.526
+            ]
+        ],
+        "sentences": [
+            "We are at a Comic Book show, specifically at a book signing.",
+            "SOMEONE sits at a table.",
+            "Beside it is a large mock up of the comic book cover which features two stoner super heroes who bear a striking resemblance to a pair of very familiar friendly neighborhood drug dealers, SOMEONE hands the book back to the Fan.",
+            "He offers him a patronizingly kind, half smile in return."
+        ],
+        "left_append": 47,
+        "left": 147.225,
+        "right": 187.728,
+        "right_append": 32,
+        "total_time": 119.50300000000001,
+        "time_append": 79
+    },
+    "0049_Hannah_and_her_sisters": {
+        "duration": 6415.2,
+        "timestamps": [
+            [
+                118.59,
+                121.837
+            ],
+            [
+                120.602,
+                125.523
+            ],
+            [
+                123.768,
+                127.992
+            ],
+            [
+                127.992,
+                129.988
+            ]
+        ],
+        "sentences": [
+            "SOMEONE glances over her shoulder, then turns from the doorway and walks away.",
+            "The camera follows her, moving across a book and photograph filled bookshelf that obscures her from view as she walks into a crowded, comfortable vestibule.",
+            "People, some holding drinks, some just entering the apartment, surround her.",
+            "Everyone is talking at once, carrying on easy, familiar conversation."
+        ],
+        "left_append": 75,
+        "left": 118.59,
+        "right": 129.988,
+        "right_append": 34,
+        "total_time": 120.398,
+        "time_append": 109
+    },
+    "0050_Indiana_Jones_and_the_last_crusade": {
+        "duration": 7613.8,
+        "timestamps": [
+            [
+                140.501,
+                143.813
+            ],
+            [
+                149.591,
+                153.55
+            ],
+            [
+                153.55,
+                156.102
+            ],
+            [
+                166.961,
+                168.868
+            ]
+        ],
+        "sentences": [
+            "Two Boy Scouts climb up the rocky base of the cliff.",
+            "The two boys head down the passageway.",
+            "It's dark, and the temperature drops several degrees.",
+            "The light of kerosene lanterns dances on the tunnel walls ahead."
+        ],
+        "left_append": 66,
+        "left": 140.501,
+        "right": 168.868,
+        "right_append": 26,
+        "total_time": 120.36699999999999,
+        "time_append": 92
+    },
+    "0051_Men_in_black": {
+        "duration": 5879.4,
+        "timestamps": [
+            [
+                182.367,
+                193.257
+            ],
+            [
+                195.827,
+                199.916
+            ],
+            [
+                201.626,
+                203.238
+            ],
+            [
+                203.624,
+                206.533
+            ]
+        ],
+        "sentences": [
+            "He squirts some wiper fluid onto the glass, which clears it up a bit, but now he sees something worse up ahead.",
+            "It's a grouping of headlights, eight of them, all pointed at him, sealing off the road.",
+            "He bites his lip and calls over his shoulder, to the back of the van.",
+            "He speaks in Spanish, which is subtitled."
+        ],
+        "left_append": 5,
+        "left": 182.367,
+        "right": 206.533,
+        "right_append": 91,
+        "total_time": 120.166,
+        "time_append": 96
+    },
+    "1001_Flight": {
+        "duration": 8315.8,
+        "timestamps": [
+            [
+                32.106,
+                41.879
+            ],
+            [
+                44.144,
+                45.499
+            ],
+            [
+                44.899,
+                48.28
+            ],
+            [
+                49.127,
+                56.406
+            ]
+        ],
+        "sentences": [
+            "A plane takes off from Orlando International Airport amid heavy clouds.",
+            "In a room, a digital clock on a bedside table reads 7. 13.",
+            "It turns to 7. 14.",
+            "A naked dark haired woman with her hair falling around her shoulders, sits up on a bed."
+        ],
+        "left_append": 6,
+        "left": 32.106,
+        "right": 56.406,
+        "right_append": 90,
+        "total_time": 120.3,
+        "time_append": 96
+    },
+    "1002_Harry_Potter_and_the_Half-Blood_Prince": {
+        "duration": 9211.2,
+        "timestamps": [
+            [
+                10.77,
+                14.739
+            ],
+            [
+                26.29,
+                29.248
+            ],
+            [
+                29.934,
+                31.247
+            ],
+            [
+                33.03,
+                38.497
+            ]
+        ],
+        "sentences": [
+            "Lightning flashes behind it, as it moves forward.",
+            "A human eye.",
+            "SOMEONE's bloodied face.",
+            "A host of press photographers flash their cameras repeatedly at the dazed looking SOMEONE and a tall, white haired old man with a long white beard, SOMEONE."
+        ],
+        "left_append": 8,
+        "left": 10.77,
+        "right": 38.497,
+        "right_append": 84,
+        "total_time": 119.727,
+        "time_append": 92
+    },
+    "1003_How_to_Lose_Friends_and_Alienate_People": {
+        "duration": 6585.6,
+        "timestamps": [
+            [
+                51.932,
+                55.715
+            ],
+            [
+                85.687,
+                91.087
+            ],
+            [
+                98.775,
+                103.522
+            ],
+            [
+                117.831,
+                120.414
+            ]
+        ],
+        "sentences": [
+            "A young blond boy sits cross legged in front of the large wooden TV set on screen in black and white.",
+            "Seated guests clap as a movie clip plays at an award ceremony.",
+            "A man seated nearby.",
+            "SOMEONE is slender and beautiful."
+        ],
+        "left_append": 49,
+        "left": 51.932,
+        "right": 120.414,
+        "right_append": 3,
+        "total_time": 120.482,
+        "time_append": 52
+    },
+    "1006_Slumdog_Millionaire": {
+        "duration": 7238.6,
+        "timestamps": [
+            [
+                79.686,
+                84.01
+            ],
+            [
+                84.58,
+                90.189
+            ],
+            [
+                93.443,
+                95.314
+            ],
+            [
+                92.014,
+                95.721
+            ]
+        ],
+        "sentences": [
+            "In an interrogation room, a corpulent policeman blows cigarette smoke across the table, into the face of a terrified, sweating, young, male prisoner.",
+            "The prisoner, SOMEONE, blinks rapidly as the smoke stings his eyes.",
+            "The policeman suddenly lunges across the table.",
+            "A question appears on the screen."
+        ],
+        "left_append": 51,
+        "left": 79.686,
+        "right": 95.721,
+        "right_append": 53,
+        "total_time": 120.035,
+        "time_append": 104
+    },
+    "1007_Spider-Man1": {
+        "duration": 7272.8,
+        "timestamps": [
+            [
+                5.896,
+                9.093
+            ],
+            [
+                10.46,
+                14.127
+            ],
+            [
+                23.326,
+                30.621
+            ],
+            [
+                34.38,
+                35.047
+            ]
+        ],
+        "sentences": [
+            "to moody blue sky with tarring white and gold clouds.",
+            "A woman in Grecian style robes held aloft a shining torch.",
+            "Pages of comic magazines, the words bap and boom and finally marvel.",
+            "A ray of blue light."
+        ],
+        "left_append": 3,
+        "left": 5.896,
+        "right": 35.047,
+        "right_append": 88,
+        "total_time": 120.151,
+        "time_append": 91
+    },
+    "1008_Spider-Man2": {
+        "duration": 8148.6,
+        "timestamps": [
+            [
+                2.371,
+                21.633
+            ],
+            [
+                22.761,
+                31.907
+            ],
+            [
+                42.18,
+                47.26
+            ],
+            [
+                60.517,
+                67.022
+            ]
+        ],
+        "sentences": [
+            "Set against a moody blue sky with towering white and gold clouds, a woman in Grecian style robes holds aloft a shining torch.",
+            "Pages of comic magazines.",
+            "A spider's web is behind the letters which break up and vanish from the screen.",
+            "Images of the principal actors."
+        ],
+        "left_append": 0,
+        "left": 2.371,
+        "right": 67.022,
+        "right_append": 55,
+        "total_time": 119.65100000000001,
+        "time_append": 55
+    },
+    "1009_Spider-Man3": {
+        "duration": 8351.8,
+        "timestamps": [
+            [
+                5.364,
+                15.12
+            ],
+            [
+                24.758,
+                32.026
+            ],
+            [
+                46.547,
+                50.979
+            ],
+            [
+                65.947,
+                67.509
+            ]
+        ],
+        "sentences": [
+            "A burst of light reveals a woman dressed in a white classical robe with a blue still draped over her arm standing on top of a shallow pyramid of steps holding a blazing torch high in her right hand.",
+            "Pages from a superhero comic book flick rapidly down the screen.",
+            "A spinning war vortex of blue light becomes a silver blue spider's web which scatters the words the opening credits.",
+            "More splinted images reveal earlier moments in the story."
+        ],
+        "left_append": 2,
+        "left": 5.364,
+        "right": 67.509,
+        "right_append": 56,
+        "total_time": 120.14500000000001,
+        "time_append": 58
+    },
+    "1011_The_Help": {
+        "duration": 8775.4,
+        "timestamps": [
+            [
+                11.19,
+                12.624
+            ],
+            [
+                12.961,
+                15.226
+            ],
+            [
+                17.77,
+                20.505
+            ],
+            [
+                81.53,
+                84.206
+            ]
+        ],
+        "sentences": [
+            "A crescent moon drifting amid clouds is reflected in still water.",
+            "A fisherman's float plops onto the surface creating a ring around it.",
+            "On the curve of the crescent moon, a boy lounges with his fishing rod.",
+            "A somber looking black woman in her 40s turns to face the camera."
+        ],
+        "left_append": 3,
+        "left": 11.19,
+        "right": 84.206,
+        "right_append": 44,
+        "total_time": 120.016,
+        "time_append": 47
+    },
+    "1014_2012": {
+        "duration": 9470,
+        "timestamps": [
+            [
+                17.565,
+                20.985
+            ],
+            [
+                22.165,
+                27.446
+            ],
+            [
+                30.326,
+                35.595
+            ],
+            [
+                36.725,
+                41.375
+            ]
+        ],
+        "sentences": [
+            "The torch flows brightly.",
+            "The shining light gives way to the pitch black darkness of space.",
+            "A shining parabola cuts through the inky blackness.",
+            "The curving edge of planet earth is illuminated dwarfing further planets in the distance."
+        ],
+        "left_append": 3,
+        "left": 17.565,
+        "right": 41.375,
+        "right_append": 93,
+        "total_time": 119.81,
+        "time_append": 96
+    },
+    "1020_Crazy_Stupid_Love": {
+        "duration": 7086.6,
+        "timestamps": [
+            [
+                3,
+                6.383
+            ],
+            [
+                19.176,
+                22.438
+            ],
+            [
+                23.596,
+                35.318
+            ],
+            [
+                35.318,
+                38.136
+            ]
+        ],
+        "sentences": [
+            "Rows of old film studio buildings reflected in a shiny gold surface.",
+            "The feet of a woman wearing high heels and a man in Brogues under a table in a restaurant.",
+            "Under other tables in restaurants, another couple's feet.",
+            "A woman slides her foot tentatively forward."
+        ],
+        "left_append": 2,
+        "left": 3,
+        "right": 38.136,
+        "right_append": 83,
+        "total_time": 120.136,
+        "time_append": 85
+    },
+    "1028_No_Reservations": {
+        "duration": 6259.4,
+        "timestamps": [
+            [
+                19,
+                22.842
+            ],
+            [
+                154.793,
+                156.343
+            ],
+            [
+                156.843,
+                165.689
+            ],
+            [
+                170.797,
+                171.823
+            ]
+        ],
+        "sentences": [
+            "A beam of light shines out from a lighthouse and sweeps across a shimmering blue ocean.",
+            "The woman, SOMEONE, raises her eyebrows.",
+            "In a tidy restaurant kitchen, SOMEONE, a pretty brunette in her late 30s, ties a dazzling white chef's apron around her waist.",
+            "She checks some orders attached to a shelf."
+        ],
+        "left_append": 0,
+        "left": 19,
+        "right": 171.823,
+        "right_append": 0,
+        "total_time": 152.823,
+        "time_append": 0
+    },
+    "1031_Quantum_of_Solace": {
+        "duration": 6373.2,
+        "timestamps": [
+            [
+                1.645,
+                10.964
+            ],
+            [
+                12.977,
+                25.506
+            ],
+            [
+                36.513,
+                40.214
+            ],
+            [
+                46.948,
+                51.012
+            ]
+        ],
+        "sentences": [
+            "A lion's head looks out from a crest formed by a garland of film, Metro Goldman Mayer, which features the words.",
+            "Light flares from a torch held aloft by a robed woman standing on a pedestal in front of a sky dominated by towering clouds.",
+            "Towering crags rise out of a shining sea.",
+            "Two powerful cars speed along a tunnel which runs along the coast."
+        ],
+        "left_append": 0,
+        "left": 1.645,
+        "right": 51.012,
+        "right_append": 71,
+        "total_time": 120.36699999999999,
+        "time_append": 71
+    },
+    "1037_The_Curious_Case_Of_Benjamin_Button": {
+        "duration": 9963.4,
+        "timestamps": [
+            [
+                4.663,
+                9.179
+            ],
+            [
+                11.836,
+                17.623
+            ],
+            [
+                26.404,
+                35.955
+            ],
+            [
+                35.955,
+                42.198
+            ]
+        ],
+        "sentences": [
+            "Colored buttons fall into a large heap, forming the Warner Brothers' shield.",
+            "More buttons fall.",
+            "A gaunt, ashen faced, old woman's sunken eyes flicker open wearily, then close.",
+            "The woman, SOMEONE, lies in a hospital bed."
+        ],
+        "left_append": 0,
+        "left": 4.663,
+        "right": 42.198,
+        "right_append": 82,
+        "total_time": 119.535,
+        "time_append": 82
+    },
+    "1039_The_Queen": {
+        "duration": 6202.4,
+        "timestamps": [
+            [
+                64.098,
+                67.835
+            ],
+            [
+                67.835,
+                70.779
+            ],
+            [
+                104.014,
+                107.159
+            ],
+            [
+                138.999,
+                140.816
+            ]
+        ],
+        "sentences": [
+            "As she sits for a portrait wearing formal robes of state, SOMEONE's attention is drawn by television news coverage of SOMEONE.",
+            "He is dressed in a lounge suit with no jacket and he is smiling towards a cheering crowd.",
+            "SOMEONE continues his oil painting.",
+            "SOMEONE smiles at SOMEONE."
+        ],
+        "left_append": 26,
+        "left": 64.098,
+        "right": 140.816,
+        "right_append": 17,
+        "total_time": 119.718,
+        "time_append": 43
+    },
+    "1043_Vantage_Point": {
+        "duration": 5405.8,
+        "timestamps": [
+            [
+                5.345,
+                9.48
+            ],
+            [
+                9.813,
+                15.48
+            ],
+            [
+                23.235,
+                26.09
+            ],
+            [
+                32.105,
+                34.99
+            ]
+        ],
+        "sentences": [
+            "A bright white light shines in front of a cloudy sky.",
+            "The light is held aloft by a statuesque woman wearing a long white robe with a blue sash draped around her.",
+            "Silver metallic letters on a black background.",
+            "Framed within a V shape, a city skyline."
+        ],
+        "left_append": 3,
+        "left": 5.345,
+        "right": 34.99,
+        "right_append": 87,
+        "total_time": 119.64500000000001,
+        "time_append": 90
+    },
+    "1045_An_education": {
+        "duration": 6021.4,
+        "timestamps": [
+            [
+                74.597,
+                76.703
+            ],
+            [
+                74.697,
+                78.7
+            ],
+            [
+                86.83,
+                92.17
+            ],
+            [
+                89.134,
+                92.98
+            ]
+        ],
+        "sentences": [
+            "At School.",
+            "Young women walk with books balanced on their heads.",
+            "The girls lead to dance.",
+            "Circling the hall in pairs."
+        ],
+        "left_append": 6,
+        "left": 74.597,
+        "right": 92.98,
+        "right_append": 96,
+        "total_time": 120.38300000000001,
+        "time_append": 102
+    },
+    "1046_Australia": {
+        "duration": 9929.4,
+        "timestamps": [
+            [
+                95,
+                98.54
+            ],
+            [
+                158,
+                159.8
+            ],
+            [
+                173.023,
+                181
+            ],
+            [
+                181,
+                188.811
+            ]
+        ],
+        "sentences": [
+            "Dawn glows orange, casting two people and a tree in silhouette.",
+            "His grandfather grabs his fishing pole.",
+            "The boy lies wide eyed on the bottom as a White man in a suit falls face first into the water.",
+            "He floats lifelessly over where the boy is lying, his blood staining the water."
+        ],
+        "left_append": 22,
+        "left": 95,
+        "right": 188.811,
+        "right_append": 4,
+        "total_time": 119.811,
+        "time_append": 26
+    },
+    "1047_Defiance": {
+        "duration": 8208.6,
+        "timestamps": [
+            [
+                27.071,
+                32.511
+            ],
+            [
+                32.511,
+                33.775
+            ],
+            [
+                33.775,
+                34.558
+            ],
+            [
+                34.558,
+                35.038
+            ]
+        ],
+        "sentences": [
+            "Over the sound of SOMEONE addressing a rally.",
+            "Grainy black and white footage shows him.",
+            "With his arm extended at an angle of 10 degrees from his shoulder.",
+            "Giving the Nazi salute."
+        ],
+        "left_append": 5,
+        "left": 27.071,
+        "right": 35.038,
+        "right_append": 107,
+        "total_time": 119.967,
+        "time_append": 112
+    },
+    "1048_Gran_Torino": {
+        "duration": 6995.2,
+        "timestamps": [
+            [
+                14.16,
+                16.256
+            ],
+            [
+                45.972,
+                50.245
+            ],
+            [
+                50.904,
+                53.535
+            ],
+            [
+                53.578,
+                57.16
+            ]
+        ],
+        "sentences": [
+            "Six silver interlocking V shapes of decreasing sizes.",
+            "A hearse and several cars are parked outside a large Catholic church.",
+            "A balding man plays the organ.",
+            "A small congregation sits in pews towards the front of the grand church."
+        ],
+        "left_append": 5,
+        "left": 14.16,
+        "right": 57.16,
+        "right_append": 72,
+        "total_time": 120.0,
+        "time_append": 77
+    },
+    "1055_Marley_and_me": {
+        "duration": 6935.4,
+        "timestamps": [
+            [
+                65.402,
+                67.165
+            ],
+            [
+                68.665,
+                72.749
+            ],
+            [
+                97.728,
+                105.399
+            ],
+            [
+                109.899,
+                112.761
+            ]
+        ],
+        "sentences": [
+            "A boy walks through a meadow with his dog.",
+            "A huge dog leaps a fence and heads for the boy, chased by its owner.",
+            "The newlyweds dangle their feet in a bath and swig champagne from the bottle.",
+            "Trim and blonde, she takes a swig."
+        ],
+        "left_append": 1,
+        "left": 65.402,
+        "right": 112.761,
+        "right_append": 72,
+        "total_time": 120.359,
+        "time_append": 73
+    },
+    "1057_Seven_pounds": {
+        "duration": 7385.8,
+        "timestamps": [
+            [
+                2.964,
+                4.99
+            ],
+            [
+                4.99,
+                6.465
+            ],
+            [
+                6.465,
+                9.83
+            ],
+            [
+                9.83,
+                20.354
+            ]
+        ],
+        "sentences": [
+            "A bright white light shines out from the center of a black screen.",
+            "The screen lightens to reveal clouds and a blue sky.",
+            "The light is held aloft by a statuesque woman wearing a long, white robe with a blue sash draped around her.",
+            "She stands on a raised plinth before the cloudy sky."
+        ],
+        "left_append": 0,
+        "left": 2.964,
+        "right": 20.354,
+        "right_append": 103,
+        "total_time": 120.39,
+        "time_append": 103
+    },
+    "1059_The_devil_wears_prada": {
+        "duration": 6563.8,
+        "timestamps": [
+            [
+                33.612,
+                44.406
+            ],
+            [
+                44.409,
+                54.796
+            ],
+            [
+                55.315,
+                61.008
+            ],
+            [
+                61.103,
+                65.203
+            ]
+        ],
+        "sentences": [
+            "She wipes mist off her bathroom mirror and brushes her teeth.",
+            "Elsewhere in New York City, some very fashionable ladies are also getting dressed.",
+            "The model type women put on expensive looking designer underwear.",
+            "SOMEONE roots through a jumbled drawer and pulls out a serviceable pair of white pants."
+        ],
+        "left_append": 9,
+        "left": 33.612,
+        "right": 65.203,
+        "right_append": 79,
+        "total_time": 119.59100000000001,
+        "time_append": 88
+    },
+    "1060_Yes_man": {
+        "duration": 6263.4,
+        "timestamps": [
+            [
+                2.929,
+                16.559
+            ],
+            [
+                20.589,
+                25.066
+            ],
+            [
+                30.689,
+                33.096
+            ],
+            [
+                33.189,
+                36.351
+            ]
+        ],
+        "sentences": [
+            "Rows of film studio buildings reflected in the shiny gold surface of a shield with the letters WB in its center.",
+            "A series of 3D metallic Vs, one inside the other.",
+            "A brown haired guy in his 40s, SOMEONE, rejects a call from an unknown caller.",
+            "He stares down blankly."
+        ],
+        "left_append": 1,
+        "left": 2.929,
+        "right": 36.351,
+        "right_append": 86,
+        "total_time": 120.422,
+        "time_append": 87
+    },
+    "1061_Harry_Potter_and_the_deathly_hallows_Disk_Two": {
+        "duration": 7827.2,
+        "timestamps": [
+            [
+                5.58,
+                9.292
+            ],
+            [
+                8,
+                10.512
+            ],
+            [
+                10.512,
+                13.437
+            ],
+            [
+                15.085,
+                19.267
+            ]
+        ],
+        "sentences": [
+            "The rippling waters of Hogwarts' lake are surrounded by dark mountains.",
+            "On the far side, a white marble tomb on a tiny island.",
+            "A large marble block slides back and two supports beneath it tumble away.",
+            "SOMEONE leans down into the tomb."
+        ],
+        "left_append": 3,
+        "left": 5.58,
+        "right": 19.267,
+        "right_append": 103,
+        "total_time": 119.687,
+        "time_append": 106
+    },
+    "1062_Day_the_Earth_stood_still": {
+        "duration": 6216.4,
+        "timestamps": [
+            [
+                26.466,
+                32.2
+            ],
+            [
+                51.301,
+                53.861
+            ],
+            [
+                57,
+                60.863
+            ],
+            [
+                60,
+                61
+            ]
+        ],
+        "sentences": [
+            "Stars drift slowly in the blackness of space.",
+            "A moon glows silver in the darkness.",
+            "Seen from the mountainous surface of the Earth.",
+            "Letters form around the moon."
+        ],
+        "left_append": 1,
+        "left": 26.466,
+        "right": 61,
+        "right_append": 84,
+        "total_time": 119.53399999999999,
+        "time_append": 85
+    },
+    "3009_BATTLE_LOS_ANGELES": {
+        "duration": 6971.4,
+        "timestamps": [
+            [
+                187.17,
+                189.675
+            ],
+            [
+                189.722,
+                194.495
+            ],
+            [
+                195.401,
+                196.441
+            ],
+            [
+                196.441,
+                198.6
+            ]
+        ],
+        "sentences": [
+            "SOMEONE walks and then stops.",
+            "Altogether, his face dripping with sweat.",
+            "Later, SOMEONE turns to two younger Marines hanging out by the car next to his.",
+            "One raises his sports drink in a toast."
+        ],
+        "left_append": 10,
+        "left": 187.17,
+        "right": 198.6,
+        "right_append": 99,
+        "total_time": 120.43,
+        "time_append": 109
+    },
+    "3015_CHARLIE_ST_CLOUD": {
+        "duration": 5957.4,
+        "timestamps": [
+            [
+                181,
+                185.307
+            ],
+            [
+                186,
+                187.924
+            ],
+            [
+                193,
+                195.444
+            ],
+            [
+                198,
+                198.984
+            ]
+        ],
+        "sentences": [
+            "Sunset reception, they wear gold medals.",
+            "He place hands and smooth SOMEONE's hair.",
+            "They each affect a hunky stance.",
+            "The photographer steps away."
+        ],
+        "left_append": 18,
+        "left": 181,
+        "right": 198.984,
+        "right_append": 84,
+        "total_time": 119.98400000000001,
+        "time_append": 102
+    },
+    "3021_DEATH_AT_A_FUNERAL": {
+        "duration": 5539,
+        "timestamps": [
+            [
+                2349.072,
+                2350.784
+            ],
+            [
+                2358.749,
+                2362.346
+            ],
+            [
+                2373.478,
+                2381.96
+            ],
+            [
+                2383.616,
+                2387.858
+            ]
+        ],
+        "sentences": [
+            "Downstairs, SOMEONE chats with a guest.",
+            "As the guest heads off, SOMEONE appears.",
+            "SOMEONE leads him into the study where SOMEONE takes in the refined decor.",
+            "The dwarf spots a manuscript on the coffee table."
+        ],
+        "left_append": 36,
+        "left": 2349.072,
+        "right": 2387.858,
+        "right_append": 45,
+        "total_time": 119.78600000000006,
+        "time_append": 81
+    },
+    "3031_HANSEL_GRETEL_WITCH_HUNTERS": {
+        "duration": 5876.4,
+        "timestamps": [
+            [
+                171,
+                179.305
+            ],
+            [
+                179.329,
+                185.254
+            ],
+            [
+                185.354,
+                193.805
+            ],
+            [
+                193.905,
+                206.279
+            ]
+        ],
+        "sentences": [
+            "They pause at the edge of the clearing.",
+            "where they behold an amazing house made of candy and pastries.",
+            "The children cautiously walk through the compound up to the house, looking around as they go.",
+            "They stop and exchange a glance before they charge to the door and pound on it."
+        ],
+        "left_append": 3,
+        "left": 171,
+        "right": 206.279,
+        "right_append": 82,
+        "total_time": 120.279,
+        "time_append": 85
+    },
+    "3032_HOW_DO_YOU_KNOW": {
+        "duration": 7245.6,
+        "timestamps": [
+            [
+                181.192,
+                190.887
+            ],
+            [
+                190.987,
+                193.387
+            ],
+            [
+                198.792,
+                201.068
+            ],
+            [
+                201.168,
+                202.223
+            ]
+        ],
+        "sentences": [
+            "Moving to the door, she looks at the head coach and grins.",
+            "She steps out to meet SOMEONE in the hall.",
+            "The bitter assistant coach shares a warm hug with her player.",
+            "Now as we rove over a river toward a city, words appear."
+        ],
+        "left_append": 54,
+        "left": 181.192,
+        "right": 202.223,
+        "right_append": 45,
+        "total_time": 120.031,
+        "time_append": 99
+    },
+    "1005_Signs": {
+        "duration": 6391.2,
+        "timestamps": [
+            [
+                126.568,
+                130.799
+            ],
+            [
+                133.011,
+                138.202
+            ],
+            [
+                138.402,
+                139.332
+            ],
+            [
+                139.333,
+                140.071
+            ]
+        ],
+        "sentences": [
+            "A set of swings and a climbing frame stand in a rural backyard, along with a picnic table and a brick barbecue.",
+            "An upstairs window looks out over the scene.",
+            "Inside a framed photo on a bedside table shows a smiling family.",
+            "Mum, dad, and a young boy and girl."
+        ],
+        "left_append": 8,
+        "left": 126.568,
+        "right": 140.071,
+        "right_append": 98,
+        "total_time": 119.503,
+        "time_append": 106
+    },
+    "1051_Harry_Potter_and_the_goblet_of_fire": {
+        "duration": 9426,
+        "timestamps": [
+            [
+                5.802,
+                14.617
+            ],
+            [
+                19.313,
+                28.159
+            ],
+            [
+                28.159,
+                31.099
+            ],
+            [
+                31.099,
+                47.214
+            ]
+        ],
+        "sentences": [
+            "A metallic shield with the letters WB moves slowly forward out of darkness.",
+            "A heap of skulls and bones is piled high behind iron railings.",
+            "From the grinning mouth of a skull emerges the head of a large snake.",
+            "Flickering its tongue, it slithers down onto a narrow path and moves silently between the gravestones in a dark and overgrown cemetery."
+        ],
+        "left_append": 3,
+        "left": 5.802,
+        "right": 47.214,
+        "right_append": 76,
+        "total_time": 120.412,
+        "time_append": 79
+    },
+    "3026_FRIENDS_WITH_BENEFITS": {
+        "duration": 6565.8,
+        "timestamps": [
+            [
+                253,
+                260.05
+            ],
+            [
+                259,
+                263.05
+            ],
+            [
+                294.738,
+                295.502
+            ],
+            [
+                300.856,
+                305.37
+            ]
+        ],
+        "sentences": [
+            "His date gives a thumbs up, mouths SOMEONE Mayer, and rushes inside.",
+            "SOMEONE's date hugs her.",
+            "Now the web designer rides in an airplane.",
+            "A flight attendant, flirtatiously close."
+        ],
+        "left_append": 54,
+        "left": 253,
+        "right": 305.37,
+        "right_append": 14,
+        "total_time": 120.37,
+        "time_append": 68
+    },
+    "3035_INSIDE_MAN": {
+        "duration": 7717,
+        "timestamps": [
+            [
+                180.238,
+                187.211
+            ],
+            [
+                228.353,
+                233.432
+            ],
+            [
+                258.431,
+                270.633
+            ],
+            [
+                270.733,
+                273.382
+            ]
+        ],
+        "sentences": [
+            "SOMEONE is approaching van.",
+            "It shows a statue of a cow.",
+            "Now, the van rolls past pedestrians making their way.",
+            "between the two front seats, SOMEONE gets up."
+        ],
+        "left_append": 26,
+        "left": 180.238,
+        "right": 273.382,
+        "right_append": 1,
+        "total_time": 120.144,
+        "time_append": 27
+    },
+    "3039_JACK_AND_JILL": {
+        "duration": 5449.8,
+        "timestamps": [
+            [
+                162,
+                166.05
+            ],
+            [
+                166.04,
+                168.426
+            ],
+            [
+                168.426,
+                173.733
+            ],
+            [
+                177.003,
+                181.748
+            ]
+        ],
+        "sentences": [
+            "Then they slap at each other.",
+            "In a tub, bubbles rise from the little boy's bottom.",
+            "His sister lets one loose.",
+            "As children, the sister climbs into her brother's bed to snuggle."
+        ],
+        "left_append": 62,
+        "left": 162,
+        "right": 181.748,
+        "right_append": 38,
+        "total_time": 119.74799999999999,
+        "time_append": 100
+    },
+    "3056_PUBLIC_ENEMIES": {
+        "duration": 8404.4,
+        "timestamps": [
+            [
+                166.249,
+                169.495
+            ],
+            [
+                169.595,
+                173.05
+            ],
+            [
+                173.726,
+                177.277
+            ],
+            [
+                177.377,
+                182.406
+            ]
+        ],
+        "sentences": [
+            "Sitting across from them, a younger inmate glances up.",
+            "The two men dig through large spools of white thread.",
+            "They each pull out a gun and using the spools to conceal them, pass them to the young inmate and man sitting next to him.",
+            "They stealthily tuck the weapons in their pants."
+        ],
+        "left_append": 28,
+        "left": 166.249,
+        "right": 182.406,
+        "right_append": 76,
+        "total_time": 120.15700000000001,
+        "time_append": 104
+    },
+    "3086_UGLY_TRUTH": {
+        "duration": 5758,
+        "timestamps": [
+            [
+                165,
+                170.05
+            ],
+            [
+                188,
+                193.25
+            ],
+            [
+                194.641,
+                197.05
+            ],
+            [
+                198,
+                203.05
+            ]
+        ],
+        "sentences": [
+            "She enters an office.",
+            "SOMEONE calmly brings a whistle to her lips.",
+            "Now in a control room.",
+            "The team shoots a cooking segment."
+        ],
+        "left_append": 57,
+        "left": 165,
+        "right": 203.05,
+        "right_append": 25,
+        "total_time": 120.05000000000001,
+        "time_append": 82
+    },
+    "1004_Juno": {
+        "duration": 5765.2,
+        "timestamps": [
+            [
+                32.849,
+                35.458
+            ],
+            [
+                35.642,
+                45.231
+            ],
+            [
+                49.801,
+                59.45
+            ],
+            [
+                61.451,
+                69.023
+            ]
+        ],
+        "sentences": [
+            "Beneath it, a low rise bungalow perched on a gentle slope looks out over an uneven lawn under a cloudy sky.",
+            "A teenage girl with short brown hair tied back in a small ponytail swigs from a little size plastic bottle as she contemplates an armchair standing on the lawn, in front of her.",
+            "In flashback, the girl steps out of the knickers and walks slowly across the room towards a skinny boy sitting bare chested in the same armchair.",
+            "Wearing just a T shirt, the girl gives a tentative smile as she straddles the boy's lap and brings her rosebud lipped mouth close to his faith."
+        ],
+        "left_append": 12,
+        "left": 32.849,
+        "right": 69.023,
+        "right_append": 72,
+        "total_time": 120.174,
+        "time_append": 84
+    },
+    "1012_Unbreakable": {
+        "duration": 6399.8,
+        "timestamps": [
+            [
+                55.705,
+                57.729
+            ],
+            [
+                76.168,
+                81.735
+            ],
+            [
+                90.022,
+                91.775
+            ],
+            [
+                100.732,
+                103.065
+            ]
+        ],
+        "sentences": [
+            "People are reflected in the mirror of a shop changing room, peering in nervously.",
+            "SOMEONE sits beside a black woman who's lying down, gazing into a blanket wrapped bundle.",
+            "The women smiles at the wriggling bundle.",
+            "The doctor gently lifts the bundle and looks inside."
+        ],
+        "left_append": 50,
+        "left": 55.705,
+        "right": 103.065,
+        "right_append": 23,
+        "total_time": 120.36,
+        "time_append": 73
+    },
+    "1034_Super_8": {
+        "duration": 6709.2,
+        "timestamps": [
+            [
+                24.672,
+                30.057
+            ],
+            [
+                36.795,
+                41.816
+            ],
+            [
+                42.556,
+                44.354
+            ],
+            [
+                45.257,
+                47.201
+            ]
+        ],
+        "sentences": [
+            "The shadow of a boy cycling a bike with a dumpy alien in the handlebar basket passes in front of a full moon.",
+            "A small robot races back and forth through long grass, under a cloudy sky.",
+            "The robot stops and blinks.",
+            "Bad Robot."
+        ],
+        "left_append": 0,
+        "left": 24.672,
+        "right": 47.201,
+        "right_append": 97,
+        "total_time": 119.529,
+        "time_append": 97
+    },
+    "1040_The_Ugly_Truth": {
+        "duration": 5758,
+        "timestamps": [
+            [
+                2,
+                8.667
+            ],
+            [
+                9,
+                11.667
+            ],
+            [
+                23.012,
+                28.419
+            ],
+            [
+                33.65,
+                39.93
+            ]
+        ],
+        "sentences": [
+            "A bright white light is held aloft by a statuesque woman wearing a long, white robe with a blue sash draped around her.",
+            "She stands on a cliff before a cloudy sky.",
+            "A boy leaps off a jetty towards a lake and is frozen in midair.",
+            "The traffic helicopter for a local news program flies over Sacramento, California."
+        ],
+        "left_append": 0,
+        "left": 2,
+        "right": 39.93,
+        "right_append": 82,
+        "total_time": 119.93,
+        "time_append": 82
+    },
+    "1054_Harry_Potter_and_the_prisoner_of_azkaban": {
+        "duration": 8502.6,
+        "timestamps": [
+            [
+                27.36,
+                37.219
+            ],
+            [
+                40.373,
+                43.948
+            ],
+            [
+                44.479,
+                48.396
+            ],
+            [
+                48.396,
+                53.175
+            ]
+        ],
+        "sentences": [
+            "Behind the shield, a faint light flashes on and off from the bedroom window of a suburban house.",
+            "The light is flashing from beneath a bed sheet.",
+            "SOMEONE suddenly emerges from under the sheet and pretends to be asleep.",
+            "SOMEONE, wearing a dressing gown, puts on the light and glares around the room."
+        ],
+        "left_append": 25,
+        "left": 27.36,
+        "right": 53.175,
+        "right_append": 69,
+        "total_time": 119.815,
+        "time_append": 94
+    }
+}

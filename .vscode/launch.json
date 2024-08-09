@@ -1,0 +1,34 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "distribute",
+        "type": "python",
+        "request": "launch",
+        // "program": "${workspaceFolder}/src/main_distributed.py",  //直接运行一个python脚本，没有模块路径
+        "module": "src.main_distributed",  //按照模块结构来启动 等价于 python -m src.main_distributed，能够确保相对导入 from .dataset import *成功
+        
+        "args": [
+            "--exp_path",
+            "distribute_out",
+            "--config_name",
+            "soonet_mad",
+            "--mode",
+            "train"
+        ],
+        "console": "integratedTerminal",
+        "env": {
+
+            // "WORLD_SIZE": "1",
+            // "RANK": "0",
+            "CUDA_VISIBLE_DEVICES": "1",
+            "NCCL_P2P_LEVEL": "PIX",
+            "MASTER_ADDR": "127.0.0.1",
+            "MASTER_PORT": "12355",
+            "PYTHONPATH": "${workspaceFolder}/src"
+        },
+        "justMyCode": false
+      }
+    ]
+  }
+  

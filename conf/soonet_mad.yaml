@@ -1,0 +1,56 @@
+SEED: 2022
+
+CUDNN:
+  DETERMINISTIC: True
+  BENCHMARK: False
+
+DATASET: "mad"
+DATA:
+  DATA_DIR: "data/mad"
+  PRE_LOAD: False
+
+MODEL:
+  HIDDEN_DIM: 512
+  SNIPPET_LENGTH: 10
+  SCALE_NUM: 4
+  ENABLE_STAGE2: True
+  STAGE2_POOL: "mean"
+  STAGE2_TOPK: 100
+  ENABLE_NMS: False
+
+LOSS:
+  TEMPE: 0.01
+  Q2V:
+    CTX_WEIGHT: 1.0
+    CTN_WEIGHT: 1.0
+  V2Q:
+    CTX_WEIGHT: 1.0
+    CTN_WEIGHT: 1.0
+    MIN_IOU: 0.3
+  REGRESS:
+    ENABLE: True
+    WEIGHT: 20.0
+    IOU_THRESH: 0
+    REDUCE: "mean"
+
+
+OPTIMIZER:
+  LR: 0.001
+  WD: 0.0
+  LR_DECAY: 0.1
+  LR_DECAY_STEP: 40000
+
+TRAIN:
+  BATCH_SIZE: 7
+  WORKERS: 12
+  NUM_EPOCH: 1  #用在mad dataset初始化数据集上的，init部分
+  LOG_STEP: 200
+  EVAL_STEP: 2000
+  
+TEST:
+  BATCH_SIZE: 7
+  WORKERS: 12
+  TOPK: 100
+  EVAL_TOPKS: [1, 5, 10, 50, 100]  #在验证的时候召回的个数不同，计算不同召回率下的性能
+  EVAL_TIOUS: [0.1, 0.3, 0.5]
+  

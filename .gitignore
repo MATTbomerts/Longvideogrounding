@@ -1,0 +1,21 @@
+# Ignore data folder and its contents
+data/
+
+# Ignore output folder and its contents
+output/
+para_out/
+distribute_out/
+similarity_curve/
+test_out/
+
+# Ignore all python file
+test.py
+test_distribute.py
+my_test.ipynb
+mad_test_Vfeat.h5
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+# *.py[cod]
+# *$py.class
+git checkout -b raw
