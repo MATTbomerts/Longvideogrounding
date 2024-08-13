@@ -45,10 +45,10 @@ TRAIN:
   WORKERS: 12
   NUM_EPOCH: 1  #用在mad dataset初始化数据集上的，init部分
   LOG_STEP: 200
-  EVAL_STEP: 2000
+  EVAL_STEP: 20  #原本设置的是2000
   
 TEST:
-  BATCH_SIZE: 7
+  BATCH_SIZE: 7  #原本值就是64，但一次并不能处理这么多数据
   WORKERS: 12
   TOPK: 100
   EVAL_TOPKS: [1, 5, 10, 50, 100]  #在验证的时候召回的个数不同，计算不同召回率下的性能

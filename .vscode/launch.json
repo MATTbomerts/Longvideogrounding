@@ -1,6 +1,7 @@
 {
     "version": "0.2.0",
     "configurations": [
+
       {
         "name": "distribute",
         "type": "python",
@@ -14,13 +15,15 @@
             "--config_name",
             "soonet_mad",
             "--mode",
-            "train"
+            "train",
+            "--local_rank", "0"
+
         ],
         "console": "integratedTerminal",
         "env": {
 
-            // "WORLD_SIZE": "1",
-            // "RANK": "0",
+            "WORLD_SIZE": "1",
+            "RANK": "0",
             "CUDA_VISIBLE_DEVICES": "1",
             "NCCL_P2P_LEVEL": "PIX",
             "MASTER_ADDR": "127.0.0.1",

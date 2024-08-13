@@ -104,8 +104,8 @@ def main():
     trainer = Trainer(mode=opt.mode, save_or_load_path=opt.exp_path, cfg=cfg,rank=rank)
     trainer_ettime=time.time()
     # pdb.set_trace()
-    print("trainer time: ",trainer_ettime-trainer_sttime)
-    print("dataset time: ",dataset_ettime-dataset_sttime)
+    # print("trainer time: ",trainer_ettime-trainer_sttime)
+    # print("dataset time: ",dataset_ettime-dataset_sttime)
     if opt.mode == "train":
         trainer.train(train_loader, test_loader,train_sampler)
     elif opt.mode == "eval":
@@ -117,13 +117,13 @@ def main():
     cleanup()
     
 
-def run_training(world_size):
-    # mp.spawn(main,
-    #          args=(world_size,),
-    #          nprocs=world_size,
-    #          join=True)
+# def run_training(world_size):
+#     # mp.spawn(main,
+#     #          args=(world_size,),
+#     #          nprocs=world_size,
+#     #          join=True)
     
-    main(ot.local_rank,world_size)
+#     main(ot.local_rank,world_size)
 
 
 

@@ -26,7 +26,7 @@ class Trainer(object):
         self.model = torch.nn.SyncBatchNorm.convert_sync_batchnorm(self.model) 
         # print(rank)
         self.model = self.model.to(rank)
-        self.model = DDP(self.model, device_ids=[rank])
+        self.model = DDP(self.model, device_ids=[rank],find_unused_parameters=True)
         
         self.evaluator = Evaluator(tiou_threshold=cfg.TEST.EVAL_TIOUS, topks=cfg.TEST.EVAL_TOPKS)
 
@@ -141,6 +141,7 @@ class Trainer(object):
 
     
     def train_epoch(self, epoch, train_loader, test_loader, logger, cfg,train_sampler):
+        #在train_epoch的过程中就会去进行eval
         self.model.train()
         best_r1 = 0
         batch_st=time.time()
@@ -153,15 +154,14 @@ class Trainer(object):
             training_st=time.time()
             loss_dict = self.model(
                 query_feats=batch["query_feats"].to(self.rank), 
-                query_masks=batch["query_masks"].to(self.rank), 
                 video_feats=batch["video_feats"].to(self.rank),
-                start_ts=batch["starts"].to(self.rank),
-                end_ts=batch["ends"].to(self.rank),
-                scale_boundaries=batch["scale_boundaries"].to(self.rank),
-                overlaps=batch["overlaps"].to(self.rank),
+                video_events=batch["video_events"].to(self.rank),
                 timestamps=batch["timestamps"].to(self.rank),
-                anchor_masks=batch["anchor_masks"].to(self.rank)
             )
+            # for name, param in self.model.named_parameters():  #如果模型中有模块未参与到训练中，在分布式中会报错
+            #     if param.grad is None:
+            #         print(f"Parameter {name} is not used in the forward pass.")
+                    
             total_loss = loss_dict["total_loss"]
             self.optimizer.zero_grad()
             total_loss.backward()
@@ -169,12 +169,7 @@ class Trainer(object):
             self.scheduler.step()
             
             training_et=time.time()
-            # print(self.device,type(self.device))
-            if self.device==torch.device(f'cuda:{0}') :
-                pass
-                # print(f"batch time: {batch_et-batch_st}, training time: {training_et-training_st}")
 
-            #使用了self.device判断之后就不再记录结果
             #在记录实验结果时，也是主卡记录就可以，下面这种写法，使用了几张卡，则会记录几次，应该加上判断rank==0
             if i % cfg.TRAIN.LOG_STEP == 0 and self.rank==0:  #LOG_STEP设置值为200，表示读了200个数据，但是并不能表示对所有数据进行了一轮迭代吧?
                 log_str = f"Step: {i}, "
@@ -217,24 +212,29 @@ class Trainer(object):
         
         
     def eval_epoch(self, test_loader):
-        self.model.eval()
+        self.model.eval()  #将self.training改为false操作
         #eval的时候和training执行的操作不一样，可能导致时间变长
         preds, gts = list(), list()
         with torch.no_grad():
             eval_batch_st = time.time()
             #从dataset中拿出的一条数据是一个视频和其对应的所有query,但在模型forward时，还是使用yaml文件中的batch去计算的
             for i, batch in enumerate(tqdm(test_loader, total=len(test_loader), desc="validating")):
-            # for batch in tqdm(test_loader, total=len(test_loader)):
                 eval_batch_et = time.time()
                 eval_model_st=time.time()
                 #在验证的时候模型中使用top 100,得到的数据都在CPU上
-                scores, bboxes = self.model(
+                #在测试时，目的是为了得到预测出来区间戳
+                bboxes = self.model(
+                    # query_feats=batch["query_feats"].to(self.rank), 
+                    # query_masks=batch["query_masks"].to(self.rank), 
+                    # video_feats=batch["video_feats"].to(self.rank),
+                    # start_ts=batch["starts"].to(self.rank),
+                    # end_ts=batch["ends"].to(self.rank),
+                    # scale_boundaries=batch["scale_boundaries"].to(self.rank),
+                    
                     query_feats=batch["query_feats"].to(self.rank), 
-                    query_masks=batch["query_masks"].to(self.rank), 
                     video_feats=batch["video_feats"].to(self.rank),
-                    start_ts=batch["starts"].to(self.rank),
-                    end_ts=batch["ends"].to(self.rank),
-                    scale_boundaries=batch["scale_boundaries"].to(self.rank),
+                    video_events=batch["video_events"].to(self.rank),
+                    timestamps=batch["timestamps"].to(self.rank),
                 )
                 #bboxes是一个视频下的的all_query,topk,2
                 #每个视频extend后,all_videos,all_query,topk,2【元素个数为all_videos】
@@ -243,10 +243,15 @@ class Trainer(object):
                 # print("preds shape:",np.array(preds).shape)  #6,100
                 #timestamps是一个query一个，但此处是视频单位，因此会有多个,得到个视频一批的query开始和结束时间
                 gts.extend([i for i in batch["timestamps"]])
-                # print("gts shape:",np.array(gts).shape)
+                
+                
                 # eval_model_et=time.time()
                 # print(f"eval batch time: {eval_batch_et-eval_batch_st}, eval model time: {eval_model_et-eval_model_st}")
                 # eval_batch_st = time.time()
+        
+        #得到所有批次的数据之后统一计算性能指标
+        #并不应该选这么多个事件出来，还要再进一步控制一下，但标准是什么？？
+        #每个查询得到的事件不一定一样，有[1785,2]也有[1651,2]，但这个表示的是什么呢？好像是所有的查询直接堆积起来前xx个元素表示的是第一个视频的所有查询
         preds=torch.stack(preds,dim=0)
         gts=torch.stack(gts,dim=0)
         print("preds,gts:{},{}".format(preds.shape,gts.shape))

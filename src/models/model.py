@@ -5,8 +5,9 @@ import torch.nn as nn
 from .blocks import *
 from .swin_transformer import SwinTransformerV2_1D
 from .loss import *
-from ..utils import fetch_feats_by_index, compute_tiou
+from ..utils import fetch_feats_by_index, compute_tiou, AttentionModule
 import time
+
 
 class SOONet(nn.Module):
 
@@ -21,6 +22,8 @@ class SOONet(nn.Module):
         stage2_topk = cfg.MODEL.STAGE2_TOPK  #100
         topk = cfg.TEST.TOPK  #100
 
+        #先开始写死抽象事件表示的参数
+        self.abstract_encoder = AttentionModule(15, 512)
         self.video_encoder = SwinTransformerV2_1D(
                                 patch_size=snippet_length, 
                                 in_chans=hidden_dim, 
@@ -66,98 +69,128 @@ class SOONet(nn.Module):
                       query_feats=None,
                       query_masks=None,
                       video_feats=None,  #在dataloaer中给出了0号维度bsz值为1 
-                      start_ts=None,  #bsz,num_all_anchors
-                      end_ts=None,
-                      scale_boundaries=None,
-                      overlaps=None,
+                      video_events=None,
                       timestamps=None,
-                      anchor_masks=None,
                       **kwargs):
         
-        #基于sentence的query特征，没有用到query_masks参数
-        sent_feat = query_feats #bsz 一个视频下选择了多个query，每一行都是一个query
-        #ctx表示context-based? 经过video encoder之后就变成多尺度  输入时bsz, hidden_dim, frames
-        #ctx_feats是一个列表，每个元素是(1,anchor_num,hidden_dim) ，anchor_num随着尺度长度的变化而变化,1表示bsz
-        ctx_feats = self.video_encoder(video_feats.permute(0, 2, 1)) #是要使用完整的长视频特征，每次dataloader只拿一个视频
-        qv_ctx_scores = self.q2v_stage1(ctx_feats, sent_feat)  #得到每个query和所有尺度的分数，pre-ranking阶段得分
-        vq_ctx_scores = self.v2q_stage1(ctx_feats, sent_feat)  #论文中在损失部分说了对ApproxNDCG更好的损失优化
-        if self.enable_stage2:
-            hit_indices = list()
-            filtered_ctx_feats = list()
-            starts = list()
-            ends = list()
-            stage2_overlaps = list()
-            #re-ranking阶段选出有重叠的片段 （论文中不是说top-m嘛？这个参数在哪里使用了？）
-            for i in range(self.nscales): #每一个尺度下进行遍历
-                #经测试一个(1,80,64)和(1,160,64)的向量输出的结果窗口尺寸的确是10，20，40，80，和dataloader部分的处理结果一致
-                #按照这里的写法来说，应该scale_boundaries也是没有bsz维度
-                scale_first = scale_boundaries[i]  #这里的scale和swin transformer得到的scale是对应的嘛
-                # print(len(scale_boundaries))
-                scale_last = scale_boundaries[i+1]  #scale_boundaries是累加的
-                # overlap的维度比较多，第一个维度是bsz，因此需要全部使用，第二个维度是scale，只需要部分使用
-                #在这部分进行选中，而不是在Dataloader中就选中，是为了输入数据批量时保持统一？
-                gt = overlaps[:, scale_first:scale_last] #得到的是一维向量。overlaps是包含不同的query,所以之后的计算也得到的是不同query对应的结果？
-                
-                #sum(0)表示保持第一个维度要丢失，第一个维度不是bsz嘛？怎么能在这个维度上进行求和？
-                #难道表示的是video-centric，只要有一个尺度和bsz中的一条样本有重叠，就会被选中参与后面的计算？
-                #因为后面的filtered_ctx_feats也的确是在视频特征上进行的操作和query的bsz无关（guess）
-                indices = torch.nonzero(gt.sum(0) > 0, as_tuple=True)[0]
-                hit_indices.append(indices)
-                #torch.index_select(input, dim, index):这个函数从 input 张量中选取指定维度 dim 上由 index 张量指定的索引的元素
-                #ctx列表中每个元素第一个维度为1 ：bsz
-                filtered_ctx_feats.append(torch.index_select(ctx_feats[i], 1, indices)) #当前尺度下有overlap的anchor特征，选择操作是否可微？？
-                #得到的结果为bsz,selected num anchors，不同的query的start和end是相同的，仅overlap,timestamps不同
-                starts.append(torch.index_select(start_ts[:, scale_first:scale_last], 1, indices))
-                ends.append(torch.index_select(end_ts[:, scale_first:scale_last], 1, indices))
-                
-                #所有bsz中的query存在一个与anchor有相交，不代表所有query都有相交，所以会有重复性吧？
-                stage2_overlaps.append(torch.index_select(overlaps[:, scale_first:scale_last], 1, indices))
+        batch_size = video_feats.size(0)
+        hidden_dim = video_feats.size(2)
+
+        # 初始化一个列表用于存储每个事件的平均特征，此处的操作还不涉及到批量化
+        event_avg_feats_list = []
+
+        for b in range(batch_size):  #一开始简单操作，就一个视频起手
+            # 获取当前批次的视频特征和事件
+            current_video_feats = video_feats[b]  # 形状为 (frames, hidden_dim)
+            current_video_events = video_events[b]  # 形状为 (frames,)
             
-            starts = torch.cat(starts, dim=1)  #因为不同尺度下第一个维度都是bsz，所以在第二个维度上进行合并，表示所有尺度下的anchor
-            ends = torch.cat(ends, dim=1)
-            stage2_overlaps = torch.cat(stage2_overlaps, dim=1)
+            # 获取唯一的事件ID以及它们的反向索引，拿到的index是从0，1，2...连续开始的，不对应于事件本身的编号
+            unique_events, inverse_indices = torch.unique(current_video_events, return_inverse=True) #也可以直接用这个来作为新的事件表示了，统一移动了
+            #[0,2,4,5] [0,0,0,1,1,1,1,2,3,3]
+            # 在这个位置就可以得到每个事件的时间区间，按照fps 5的参数条件下，需要得到的是事件的start和end，然后得到边界的偏移(或者其他)
+            
+            # 初始化一个矩阵用于存储每个事件的平均特征
+            event_avg_feats = torch.zeros((unique_events.size(0), hidden_dim))
+            
+            # 计算每个事件的平均特征
+            event_timestamps=list()
+            for i in range(unique_events.size(0)):
+                frame_rate=5
+                #得到每个事件区间的Anchor特征
+                event_avg_feats[i] = current_video_feats[inverse_indices == i].mean(dim=0)
+                #得到每个事件的开始和结束时间
+                event_start_index = (inverse_indices == i).nonzero(as_tuple=True)[0][0]
+                event_end_index = (inverse_indices == i).nonzero(as_tuple=True)[0][-1]
+                event_start_time=event_start_index/frame_rate
+                event_end_time=event_end_index/frame_rate
+                event_timestamps.append(torch.tensor([event_start_time,event_end_time]))
+                
+            event_timestamps=torch.stack(event_timestamps,dim=0)  #得到tensor表示的时间戳，此处都是所有的事件
+            # 将结果添加到列表中
+            event_avg_feats_list.append(event_avg_feats)
 
-            #使用的是原本的video特征来进行content-based特征提取，而不是在context-based的基础上，论文中也是如此
-            #ctn_feats列表中四个元素，每个元素(1,selected_anchors, snippet_length, D)
-            #计算ctn_feats时，还是使用视频本身的特征，没有结合query
-            qv_merge_scores, qv_ctn_scores, ctn_feats = self.q2v_stage2(
-                video_feats, sent_feat, hit_indices, qv_ctx_scores)  #hit_indices类似于结构图中的top-m选择
-            vq_ctn_scores = self.v2q_stage2(ctn_feats, sent_feat) #论文中这个步骤不太明白
-            ctx_feats = filtered_ctx_feats  #并没有使用top-m的结果，而是只要有相交部分就会被选中
-        else:
-            ctn_feats = None
-            qv_merge_scores = qv_ctx_scores
-            starts = start_ts
-            ends = end_ts
-            stage2_overlaps = None
+
+        # 这里最终的输出形状将为 (batch_size, num_events, hidden_dim)，在操作中bsz值为1 ,final_event的维度和unique_events的维度相关
+        final_event_anchor_feats = torch.stack(event_avg_feats_list)
+        final_event_anchor_feats=final_event_anchor_feats.to(query_feats.device)
+
+        final_event_anchor_feats = final_event_anchor_feats.squeeze(0) 
         
-        #ctn_feats列表中四个元素，每个元素(1,selected_anchors, snippet_length, D)
-        #bbox_bias会得到(bsz_query,total_num_anchors,2)的结果
-        bbox_bias = self.regressor(ctx_feats, ctn_feats, sent_feat) #结合context-based和content-based的特征进行bbox回归
+        # 对 final_event_anchor_feats 和 query_feats 进行归一化
+        final_event_anchor_feats_norm = F.normalize(final_event_anchor_feats, p=2, dim=-1)  # (num_anchors, hidden_dim)
+        query_feats_norm = F.normalize(query_feats, p=2, dim=-1)  # (batch_query, hidden_dim)
+        #使用余弦相似度计算其值能达到在【-1，1】之间，更好去判断相似的程度 ，维度为【batch_query,event anchor】
+        #此处得到的是所有事件和查询之间的相似度，进一步才根据相似度选择出需要学习的事件
+        similarity_matrix = torch.nn.functional.cosine_similarity(query_feats_norm.unsqueeze(1), final_event_anchor_feats_norm.unsqueeze(0), dim=-1)
+        
+        # todo: baseline的时候先不进行事件之间的聚集，再后面的版本中再进行聚集
+        #根据相似度阈值选择出对于每个查询需要在视频中使用学习的事件
+        event_cluster_threshold = 0.03
+        selected_columns = similarity_matrix > event_cluster_threshold #得到的依然是索引，不是真实事件ID，表示的是第几个事件
 
-        qv_ctx_scores = torch.sigmoid(torch.cat(qv_ctx_scores, dim=1))
-        qv_ctn_scores = torch.sigmoid(torch.cat(qv_ctn_scores, dim=1))
-        vq_ctx_scores = torch.sigmoid(torch.cat(vq_ctx_scores, dim=1))
-        vq_ctn_scores = torch.sigmoid(torch.cat(vq_ctn_scores, dim=1))
-        final_scores = torch.sigmoid(torch.cat(qv_merge_scores, dim=1))
+        # 结果是一个列表，每个元素是一个张量，包含每一行中满足条件的列索引，此处还是需要每个事件对应的时间区间,是有重复值的，不同的样本查询
+        selected_indices = [torch.nonzero(row).squeeze(1) for row in selected_columns]
 
-        #此处的损失使用的是所有的anchor区间和所有的overlaps,不是选中的部分
-        #但是还加入了stage2_overlaps的选择之后的损失
-        #最终就是论文中说的context-based和content-based的结合损失
-        loss_dict = self.loss(qv_ctx_scores, qv_ctn_scores, vq_ctx_scores, vq_ctn_scores, bbox_bias,
-                               timestamps, overlaps, stage2_overlaps, starts, ends, anchor_masks)
+        hit_indices = list()  #表示所有的查询选择出来的哪些事件
+        for indice in selected_indices:
+            hit_indices.extend(indice.tolist())
+            
+        hit_indices = list(set(hit_indices))  #只是相似度达到xx,直接全选出来，得到的就是选择的事件，先不进行后续的事件聚类操作
+        
+        #将事件转换为抽象固定长度，先简便版本，直接for循环针对每个事件操作，后续考虑基于长度的pad,mask方法
+        #目前还差时间信息
+        abstract_events = list() #就是从hit_indices中选择出来的事件
+        for indice in hit_indices:  #hit_indices是所有的事件的索引，因此操作无误
+            event_feat = video_feats[0][inverse_indices==indice]
+            abstract_features = self.abstract_encoder(event_feat)  #抽象事件的表示
+            abstract_events.append(abstract_features)
+        
+        """不再是所有的事件，索引不再对应，有一个压缩映射效果"""
+        abstract_events=torch.stack(abstract_events,dim=0)  #维度为(event select num, abstract_query,hidden_dim)
+        select_event_timestamps=event_timestamps[torch.tensor(hit_indices)]  #得到选择的事件的时间戳，用于后面将边界偏移转换为绝对时间
+        #上述操作之后，hit_indices中非连续的事件索引就变成了select_event_timestamps中连续的索引
+        select_duration=select_event_timestamps[:,1]-select_event_timestamps[:,0]  #得到选择的事件的持续时间
+        
+        #选择的事件预测结果，不是所有事件。bbox_bias会得到(bsz_query,total_num_anchors,2)的结果，已经能有正常结果了
+        #下面四个是一一对应的
+        bbox_bias = self.regressor(abstract_events, query_feats,mode="train") #结合context-based和content-based的特征进行bbox回归
+        select_event_timestamps=select_event_timestamps.to(bbox_bias.device)
+        select_duration=select_duration.to(bbox_bias.device)
+        pred_timestamps = select_event_timestamps.unsqueeze(0) + bbox_bias * select_duration.unsqueeze(0).unsqueeze(-1)
+        #要去计算原本聚类得到的事件到底哪些和真实查询的标注存在相交，用这部分的事件得到的预测值进行损失的计算才对(不然选择无关的片段强行将时间对齐，学习到的内容将有问题)
+        #最终可能就少数几个事件和真实标注的区间相关，没有多尺度
+        event_overlaps_pred=list() #是事件的时间戳，不是标注的时间戳，每个查询损失对应的事件个数不一定一样，但是可以统一转换为mask的方式去做
+        #要将timestamps由原本的s为单位转换为帧才能确定对应的事件，round得到的是取整后的浮点数，还不是integer形式
+        frame_timestamps=torch.round(timestamps*5).int() #真实标注的帧区间，有的秒数可能不足1s，但是帧数肯定大于一帧，取round应该没啥问题
 
+        #对每个查询而言
+        for query_index,frame_timestamp in enumerate(frame_timestamps):
+            #针对每个查询对应的时间戳，tensor(594, device='cuda:0')两个不会因为取set集合而去重，只能torch.unique
+            overlap_events=torch.unique(inverse_indices[frame_timestamp[0]:frame_timestamp[1]+1])  #得到真实标注区间对应的事件索引
+            #所有的事件和查询的标注进行相交比较，大于选择的事件数目
+            overlap_event_predict=[]
+            for overlap_event in overlap_events:  #所有的事件，hit_indices数目不是所有的，但是编号是和所有的事件一一对应
+                if overlap_event in hit_indices:  #overlap_event是一个一个进行遍历计算的
+                    #选择得到的事件、预测结果的索引和hit_indices存在压缩对应的关系，位序编号保持一致
+                    #原本在hit_indices中第1个元素为6(表示第6个事件)，在pred_timestamps中将会变为第一个元素值，对应的是所有事件的第6个
+                    #因此应该找hit_indices中值(事件)的索引，在选择后的事件中使用该索引得到该事件的预测值
+                    overlap_index = (torch.tensor(hit_indices).to(overlap_event.device) == overlap_event).nonzero(as_tuple=True)[0]
+                    overlap_event_predict.append(pred_timestamps[query_index][overlap_index].squeeze())#得到的是绝对的时间，如果不使用squeeze会多一个维度
+                else: #会存在真实标注的事件没有被选择的情况，这种情况另外计算赋值其他,强制给一个损失还算比较大
+                    overlap_event_predict.append(torch.tensor([0,0],device=bbox_bias.device)) 
+            event_overlaps_pred.append(torch.stack(overlap_event_predict)) 
+
+        loss_dict=self.loss(event_overlaps_pred,timestamps)
+        print("ok")
         return loss_dict
 
     def forward_test(self,
                      query_feats=None,
-                     query_masks=None,
                      video_feats=None,
-                     start_ts=None,  #start_ts,end_ts是指视频初始化进行scale切割时重新编造的时间戳
-                     end_ts=None,
-                     scale_boundaries=None,
+                     video_events=None,
+                     timestamps=None,
                      **kwargs):
-        """每迭代一个数据花费事件还是比较久
+        """
 
         Args:
             query_feats (_torch_, optional): _description_. (all_querys,hidden_dim)一个视频的所有query特征
@@ -175,161 +208,93 @@ class SOONet(nn.Module):
         test_gpu=list()
         test_cpu=list()
         
-        ori_ctx_feats = self.video_encoder(video_feats.permute(0, 2, 1))
-        batch_size = self.cfg.TEST.BATCH_SIZE
-        query_num = len(query_feats)
-        num_batches = math.ceil(query_num / batch_size)
+        video_events=video_events.squeeze() #先考虑bsz为1，不然unique得到的inverse_indices会有问题
+        unique_events, inverse_indices = torch.unique(video_events, return_inverse=True) #也可以直接用这个来作为新的事件表示了，统一移动了
+        #[0,2,4,5] [0,0,0,1,1,1,1,2,3,3]
+        # 在这个位置就可以得到每个事件的时间区间，按照fps 5的参数条件下，需要得到的是事件的start和end，然后得到边界的偏移(或者其他)
         
-        merge_scores, merge_bboxes = list(), list()
-        for bid in range(num_batches): #小query_batch
-            sent_feat = query_feats[bid*int(batch_size):(bid+1)*int(batch_size)]
-            qv_ctx_scores = self.q2v_stage1(ori_ctx_feats, sent_feat)
-            if self.enable_stage2:
-                hit_indices = list()
-                starts = list()
-                ends = list()
-                filtered_ctx_feats = list()
-                for i in range(self.nscales):
-                    scale_first = scale_boundaries[i]
-                    scale_last = scale_boundaries[i+1]
-
-                    _, indices = torch.sort(qv_ctx_scores[i], dim=1, descending=True)
-                    indices = indices[:, :self.stage2_topk]  #每一个层次都选择top-k个，开销也不小吧
-                    #每个尺度下，选择topk个
-                    hit_indices.append(indices)
-
-                    filtered_ctx_feats.append(fetch_feats_by_index(ori_ctx_feats[i].repeat(indices.size(0), 1, 1), indices))
-                    starts.append(fetch_feats_by_index(start_ts[bid*int(batch_size):(bid+1)*int(batch_size), scale_first:scale_last], indices))
-                    ends.append(fetch_feats_by_index(end_ts[bid*int(batch_size):(bid+1)*int(batch_size), scale_first:scale_last], indices))
-                
-                #(query_bsz, total_num_anchors)
-                starts = torch.cat(starts, dim=1)
-                ends = torch.cat(ends, dim=1)
-
-                #hit_indices是一个列表，每个元素是一个(1,topk)的tensor，表示在一个尺度下的topk选择
-                qv_merge_scores, qv_ctn_scores, ctn_feats = self.q2v_stage2(
-                    video_feats, sent_feat, hit_indices, qv_ctx_scores)
-                ctx_feats = filtered_ctx_feats 
-            else:
-                ctx_feats = ori_ctx_feats
-                ctn_feats = None
-                qv_merge_scores = qv_ctx_scores
-                starts = start_ts[bid*int(batch_size):(bid+1)*int(batch_size)]
-                ends = end_ts[bid*int(batch_size):(bid+1)*int(batch_size)]
-            #原本在训练中ctx,ctn也是列表的形式，每个元素表示在该尺度下的选择
-            #只不过测试阶段的选择数目对于每个尺度是一样的都是top-k,得到的结果是(query_length, total_num_anchors, 2),没有四个尺度独立的维度了
-            bbox_bias = self.regressor(ctx_feats, ctn_feats, sent_feat)
-            #cat表是沿着第一个维度进行拼接，就是行数不变，表示query和所有选中的anchor的计算值
-            #query_batch,num_all_anchors
-            final_scores = torch.sigmoid(torch.cat(qv_merge_scores, dim=1)) 
-
-            pred_scores, pred_bboxes = list(), list()
-            test_gpu_et=time.time()
-            test_cpu_st=time.time()
+        # 初始化一个矩阵用于存储每个事件的平均特征
+        hidden_dim=video_feats.size(-1)
+        event_avg_feats = torch.zeros((unique_events.size(0), hidden_dim))
         
-            # 使用PyTorch的排序函数
-            _, rank_ids = torch.sort(final_scores, dim=1, descending=True) #就是在第一个维度上进行操作，保持0维度不变
-            query_num = rank_ids.size(0) #进行了query_num的修改，不再是所有query的数目，而是这个bsz中样本的个数
+        # 计算每个事件的平均特征
+        event_timestamps,event_avg_feats_list=list(),list()
+        for i in range(unique_events.size(0)):
+            frame_rate=5
+            #得到每个事件区间的Anchor特征
+            event_avg_feats[i] = video_feats[0][inverse_indices == i].mean(dim=0)
+            #得到每个事件的开始和结束时间
+            event_start_index = (inverse_indices == i).nonzero(as_tuple=True)[0][0]
+            event_end_index = (inverse_indices == i).nonzero(as_tuple=True)[0][-1]
+            event_start_time=event_start_index/frame_rate
+            event_end_time=event_end_index/frame_rate
+            event_timestamps.append(torch.tensor([event_start_time,event_end_time]))
             
-            # print("starts: ",starts.shape)
-            # print("bbox_bias: ",bbox_bias.shape)
-            
-            # 使用PyTorch的gather函数进行索引操作
-            ori_start = torch.gather(starts, 1, rank_ids)
-            ori_end = torch.gather(ends, 1, rank_ids)
-            duration = ori_end - ori_start
-            
-            # print("rank_ids: ",rank_ids.shape)
-            
-            sebias = bbox_bias[np.arange(query_num)[:, None], rank_ids] 
-            sbias, ebias = sebias[:, :, 0], sebias[:, :, 1]
-            pred_start = torch.clamp(ori_start + sbias * duration, min=0)
-            pred_end = ori_end + ebias * duration
-            
-            # # 计算pred_start和pred_end,.device保证数据在同一个设备上进行计算
-            # pred_start = torch.max(torch.tensor(0, device=ori_start.device), ori_start + sbias * duration)
-            # pred_end = ori_end + ebias * duration
-
-            pred_scores = final_scores[np.arange(query_num)[:, None], rank_ids]
-            pred_bboxes = torch.stack([pred_start, pred_end], dim=2)
-
-            if self.enable_nms:  #false
-                nms_res = list()
-                for i in range(query_num):
-                    bbox_nms = self.nms(pred_bboxes[i], thresh=0.3, topk=self.topk)
-                    nms_res.append(bbox_nms)
-                pred_bboxes = nms_res
-            else:
-                #就使用tensor张量，不用列表数据结构
-                pred_scores = pred_scores[:, :self.topk] 
-                #比scores多最后一个维度表示开始和结束时间
-                pred_bboxes = pred_bboxes[:, :self.topk, :]
-            
-            #此处得到的数据全是numpy在CPU上
-            merge_scores.extend(pred_scores) 
-            
-            #extend是将pred_scores中每一行元素添加到列表中，而行表示一个query,最终长度是集合中所有query，每个query 100个anchor
-            merge_bboxes.extend(pred_bboxes)
-            
-            test_cpu_et=time.time()
-            test_gpu.append(test_gpu_et-test_gpu_st)
-            test_cpu.append(test_cpu_et-test_cpu_st)
-            test_gpu_st=time.time()
-            
-        # print("GPU time:",np.mean(test_gpu))   
-        # print("CPU time:",np.mean(test_cpu))
-        merge_scores=torch.stack(merge_scores,dim=0)
-        merge_bboxes=torch.stack(merge_bboxes,dim=0)
-        #print("merge_scores shape:",merge_scores.shape)
-        return merge_scores, merge_bboxes
+        event_timestamps=torch.stack(event_timestamps,dim=0)  #得到tensor表示的时间戳，此处都是所有的事件
+        # 将结果添加到列表中
+        event_avg_feats_list.append(event_avg_feats)
+        # 这里最终的输出形状将为 (batch_size, num_events, hidden_dim)，在操作中bsz值为1 ,final_event的维度和unique_events的维度相关
+        final_event_anchor_feats = torch.stack(event_avg_feats_list)
+        final_event_anchor_feats=final_event_anchor_feats.to(query_feats.device)
+        final_event_anchor_feats = final_event_anchor_feats.squeeze(0) 
+        final_event_anchor_feats_norm = F.normalize(final_event_anchor_feats, p=2, dim=-1)  # (num_anchors, hidden_dim)
+        query_feats_norm = F.normalize(query_feats, p=2, dim=-1)  # (batch_query, hidden_dim)
+        similarity_matrix = torch.nn.functional.cosine_similarity(query_feats_norm.unsqueeze(1), final_event_anchor_feats_norm.unsqueeze(0), dim=-1)
+        
+        #在测试的时候原设想的逻辑是通过模块先来判断事件是否有query检测，然后再从其中进行预测
+        #在baseline中的实现是通过相似度来进行选择，都没进行事件的融合，那就直接从相似度分数中选择前top-k个吧，但是需要对相似度分数进行学习，确保这个相似度分数是有效的区分标准
+        #对每个查询选择相似度最高的top-k个事件
+        #在测试的环境下使用的是一个视频和其对应的所有的查询，在dataloader中如此设置了
+        _, top_indices = torch.topk(similarity_matrix, self.stage2_topk, dim=1)
+        #直接在整个矩阵中得到不重复的元素，得到这一批次的查询共享的事件,每个查询选择100个，总的事件可能就比较多
+        hit_indices = torch.unique(top_indices)
+        
+        abstract_events = list() #就是从hit_indices中选择出来的事件
+        for indice in hit_indices:  #hit_indices是所有的事件的索引，因此操作无误
+            event_feat = video_feats[0][inverse_indices==indice]
+            abstract_features = self.abstract_encoder(event_feat)  #抽象事件的表示
+            abstract_events.append(abstract_features)
+        abstract_events=torch.stack(abstract_events,dim=0)  #维度为(event select num, abstract_query,hidden_dim)
+        event_timestamps=event_timestamps.to(hit_indices.device)
+        select_event_timestamps=event_timestamps[hit_indices]  #得到选择的事件的时间戳，用于后面将边界偏移转换为绝对时间
+        #上述操作之后，hit_indices中非连续的事件索引就变成了select_event_timestamps中连续的索引
+        select_duration=select_event_timestamps[:,1]-select_event_timestamps[:,0]  #得到选择的事件的持续时间
+        bbox_bias = self.regressor(abstract_events, query_feats,mode="test") #结合context-based和content-based的特征进行bbox回归
+        select_event_timestamps=select_event_timestamps.to(bbox_bias.device)
+        select_duration=select_duration.to(bbox_bias.device)
+        #pred_timestamps就是最终选择出来的top-k个事件预测得到的结果
+        pred_timestamps = select_event_timestamps.unsqueeze(0) + bbox_bias * select_duration.unsqueeze(0).unsqueeze(-1)
+        return pred_timestamps
+        # return merge_scores, merge_bboxes
 
     def loss(self, 
-             qv_ctx_scores, 
-             qv_ctn_scores, 
-             vq_ctx_scores, 
-             vq_ctn_scores, 
-             bbox_bias,
+             bbox_bias, #经过与真实片段存在相交的事件的预测值，列表数据一共timestamps.size(0)个元素
              timestamps,
-             overlaps, 
-             stage2_overlaps, 
-             starts, 
-             ends,
-             anchor_masks):
-        qv_ctx_loss = self.rank_loss(overlaps, qv_ctx_scores, mask=anchor_masks)
-        vq_overlaps, vq_ctx_scores = self.filter_anchor_by_iou(overlaps, vq_ctx_scores)
-        vq_ctx_loss = self.rank_loss(vq_overlaps, vq_ctx_scores, mask=torch.ones_like(vq_ctx_scores))
+             ):
+        
+        iou_loss =0.0
 
-        qv_ctn_loss, vq_ctn_loss, iou_loss = 0.0, 0.0, 0.0
-        if self.cfg.MODEL.ENABLE_STAGE2:
-            qv_ctn_loss = self.rank_loss(stage2_overlaps, qv_ctn_scores, mask=torch.ones_like(qv_ctn_scores))
-            vq_overlaps_s2, vq_ctn_scores = self.filter_anchor_by_iou(stage2_overlaps, vq_ctn_scores)
-            vq_ctn_loss = self.rank_loss(vq_overlaps_s2, vq_ctn_scores, mask=torch.ones_like(vq_ctn_scores))
+        # sbias = bbox_bias[:, :, 0]
+        # ebias = bbox_bias[:, :, 1]
+        # duration = ends - starts
+        # #此处的duration不是整个视频的duration，而是这个anchor区间的duration
+        # pred_start = starts + sbias * duration  
+        # pred_end = ends + ebias * duration
+        
 
-        if self.cfg.LOSS.REGRESS.ENABLE:
-            sbias = bbox_bias[:, :, 0]
-            ebias = bbox_bias[:, :, 1]
-            duration = ends - starts
-            #此处的duration不是整个视频的duration，而是这个anchor区间的duration
-            pred_start = starts + sbias * duration  
-            pred_end = ends + ebias * duration
+        #要从pred_start和pred_end中选择出与真实标注有重叠的anchor，然后计算损失
 
-            if self.cfg.MODEL.ENABLE_STAGE2:
-                iou_mask = stage2_overlaps > self.cfg.LOSS.REGRESS.IOU_THRESH
-            else:
-                iou_mask = overlaps > self.cfg.LOSS.REGRESS.IOU_THRESH
-            _, iou_loss = self.reg_loss(pred_start, pred_end, timestamps[:, 0:1], timestamps[:, 1:2], iou_mask)
+        #只对那些与真实标注有重叠的anchor进行计算损失(要选择实际要计算损失的对象)
+        # if self.cfg.MODEL.ENABLE_STAGE2:  
+        #     iou_mask = stage2_overlaps > self.cfg.LOSS.REGRESS.IOU_THRESH
+        # else:
+        #     iou_mask = overlaps > self.cfg.LOSS.REGRESS.IOU_THRESH
+        
+        iou_loss = self.reg_loss(bbox_bias, timestamps)
 
-        total_loss = self.cfg.LOSS.Q2V.CTX_WEIGHT * qv_ctx_loss + \
-                     self.cfg.LOSS.Q2V.CTN_WEIGHT * qv_ctn_loss + \
-                     self.cfg.LOSS.V2Q.CTX_WEIGHT * vq_ctx_loss + \
-                     self.cfg.LOSS.V2Q.CTN_WEIGHT * vq_ctn_loss + \
-                     self.cfg.LOSS.REGRESS.WEIGHT * iou_loss
+        total_loss = self.cfg.LOSS.REGRESS.WEIGHT * iou_loss
 
         loss_dict = {
-            "qv_ctx_loss": qv_ctx_loss,
-            "qv_ctn_loss": qv_ctn_loss,
-            "vq_ctx_loss": vq_ctx_loss,
-            "vq_ctn_loss": vq_ctn_loss,
             "reg_loss": iou_loss,
             "total_loss": total_loss
         }

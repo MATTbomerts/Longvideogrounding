@@ -165,7 +165,7 @@ class BboxRegressor(nn.Module):
             self.fc_ctn = nn.Linear(hidden_dim, hidden_dim)
             self.attn = SelfAttention(hidden_dim)
             self.predictor = nn.Sequential(
-                nn.Linear(2*hidden_dim, hidden_dim),
+                nn.Linear(hidden_dim, hidden_dim),
                 nn.ReLU(),
                 nn.Linear(hidden_dim, 2) 
             )
@@ -177,7 +177,7 @@ class BboxRegressor(nn.Module):
             )
         self.enable_stage2 = enable_stage2
 
-    def forward(self, ctx_feats, ctn_feats, qfeat): 
+    def forward(self, ctn_feats, qfeat,mode=None): 
         """_summary_
 
         Args:
@@ -190,27 +190,41 @@ class BboxRegressor(nn.Module):
         """
         #传入的ctx,ctn都是列表，列表中的元素才是特征，每个特征的维度保持一致
         qfeat = self.fc_q(qfeat)
-        #(1,total_num_anchors,hidden_dim) 所有尺度下anchor数目加起来，因为anchor没有长度，所以可以直接合并
-        ctx_feats = torch.cat(ctx_feats, dim=1) 
-        #模态交互点积操作 (query_length, total_num_anchors, hidden_dim)
-        ctx_fuse_feats = F.relu(self.fc_ctx(ctx_feats)) * F.relu(qfeat.unsqueeze(1))  #在这里query_length应该指的是bsz
-        if self.enable_stage2 and ctn_feats:
-            ctn_fuse_feats = list()
-            #每个元素(1，selected_anchors, snippet_length, D)
-            for i in range(len(ctn_feats)):  #长度就是scale的数目,每一个尺度下的ctn_feat维度为(1,selected_anchors,snippet_length,hidden_dim)
-                #将query的维度广播，video anchor的维度不变(1,selected_anchors,snippet_length,hidden_dim)
-                out = F.relu(self.fc_ctn(ctn_feats[i])) * F.relu(qfeat.unsqueeze(1).unsqueeze(1))
-                out = self.attn(out) #在attn中消除snippet_lenghth的原理
-                ctn_fuse_feats.append(out) 
-                
-            #(query_length, total_num_anchors, hidden_dim) 第一个维度是多少个query，第二个维度为每个query和每个anchor的得分
-            ctn_fuse_feats = torch.cat(ctn_fuse_feats, dim=1) #因为要cat起来，那应该没有snippet_length这个维度，在attn中已经解决
-            fuse_feats = torch.cat([ctx_fuse_feats, ctn_fuse_feats], dim=-1) #hidden_dim拼接
-        else:
-            fuse_feats = ctx_fuse_feats
+        # #(1,total_num_anchors,hidden_dim) 所有尺度下anchor数目加起来，因为anchor没有长度，所以可以直接合并
+        # ctx_feats = torch.cat(ctx_feats, dim=1) 
+        # #模态交互点积操作 (query_length, total_num_anchors, hidden_dim)
+        # ctx_fuse_feats = F.relu(self.fc_ctx(ctx_feats)) * F.relu(qfeat.unsqueeze(1))  #在这里query_length应该指的是bsz
+        ctn_fuse_feats = list()
+        #每个元素(1，selected_anchors, snippet_length, D)
+            #长度就是scale的数目,每一个尺度下的ctn_feat维度为(1,selected_anchors,snippet_length,hidden_dim)
+            #将query的维度广播，video anchor的维度不变(1,selected_anchors,snippet_length,hidden_dim)
         
-        #最终结果为 (query_length, total_num_anchors, 2)即对每个anchor都进行了时间边界的预测
-        out = self.predictor(fuse_feats)
+         #这行代码在进行测试的时候由于选择的是所有的查询，内存会不足，但是原本的方法不会存在不足
+         #原本是F.relu(self.fc_ctn(ctn_feats[i])) * F.relu(qfeat.unsqueeze(1).unsqueeze(1))
+         #可能由于在每个尺度下ctn_feats[i]得到的(1,selected_anchors,snippet_length,hidden_dim)长度不超过当前
+        if mode=="train": #train的时候正常计算，query_bsz只有7
+            #num_query,num_event,
+            out = F.relu(self.fc_ctn(ctn_feats)) * F.relu(qfeat.unsqueeze(1).unsqueeze(1))
+            ctn_fuse_feats = self.attn(out)
+            out = self.predictor(ctn_fuse_feats)  #num_query,num_event,2
+        else: #test的时候小批量计算
+            #一小批事件一小批计算，
+            bsz_compute=100
+            computer_iternum=math.ceil(ctn_feats.size(0)/bsz_compute)
+            outs=list()
+            for i in range(computer_iternum):
+                out=F.relu(self.fc_ctn(ctn_feats[i*bsz_compute:(i+1)*bsz_compute])) * F.relu(qfeat.unsqueeze(1).unsqueeze(1))
+                ctn_fuse_feats = self.attn(out)
+                out = self.predictor(ctn_fuse_feats)
+                outs.append(out)
+            out=torch.cat(outs,dim=1)
+            
+            # ctn_fuse_feats = self.attn(out) #在attn中消除snippet_lenghth的原理
+                
+            
+            # #最终结果为 (query_length, total_num_anchors, 2)即对每个anchor都进行了时间边界的预测
+            # out = self.predictor(ctn_fuse_feats)
+            # print("ok")
         return out
 
 
