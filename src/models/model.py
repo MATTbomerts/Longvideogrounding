@@ -193,7 +193,7 @@ class SOONet(nn.Module):
                     scale_first = scale_boundaries[i]
                     scale_last = scale_boundaries[i+1]
 
-                    _, indices = torch.sort(qv_ctx_scores[i], dim=1, descending=True)
+                    _, indices = torch.sort(qv_ctx_scores[i], dim=1, descending=True) #应该对于每个查询实际选择的尺度片段是不一样的，只用维度一致即可(每个查询拿到同样大小的n个尺度)
                     indices = indices[:, :self.stage2_topk]  #每一个层次都选择top-k个，开销也不小吧
                     #每个尺度下，选择topk个
                     hit_indices.append(indices)
