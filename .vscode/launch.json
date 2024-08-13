@@ -14,7 +14,8 @@
             "--config_name",
             "soonet_mad",
             "--mode",
-            "train"
+            "train",
+            "--local_rank", "0"
         ],
         "console": "integratedTerminal",
         "env": {

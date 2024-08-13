@@ -45,7 +45,7 @@ TRAIN:
   WORKERS: 12
   NUM_EPOCH: 1  #用在mad dataset初始化数据集上的，init部分
   LOG_STEP: 200
-  EVAL_STEP: 2000
+  EVAL_STEP: 20
   
 TEST:
   BATCH_SIZE: 7

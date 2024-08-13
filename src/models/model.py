@@ -202,7 +202,7 @@ class SOONet(nn.Module):
                     starts.append(fetch_feats_by_index(start_ts[bid*int(batch_size):(bid+1)*int(batch_size), scale_first:scale_last], indices))
                     ends.append(fetch_feats_by_index(end_ts[bid*int(batch_size):(bid+1)*int(batch_size), scale_first:scale_last], indices))
                 
-                #(query_bsz, total_num_anchors)
+                #(query_bsz, total_selected_num_anchors)
                 starts = torch.cat(starts, dim=1)
                 ends = torch.cat(ends, dim=1)
 
@@ -218,9 +218,10 @@ class SOONet(nn.Module):
                 ends = end_ts[bid*int(batch_size):(bid+1)*int(batch_size)]
             #原本在训练中ctx,ctn也是列表的形式，每个元素表示在该尺度下的选择
             #只不过测试阶段的选择数目对于每个尺度是一样的都是top-k,得到的结果是(query_length, total_num_anchors, 2),没有四个尺度独立的维度了
+            #在每个尺度下选择100个top,因此对于每个query查询所有的尺度计算结果为400个结果
             bbox_bias = self.regressor(ctx_feats, ctn_feats, sent_feat)
             #cat表是沿着第一个维度进行拼接，就是行数不变，表示query和所有选中的anchor的计算值
-            #query_batch,num_all_anchors
+            #query_batch,num_all_anchors(all scales)
             final_scores = torch.sigmoid(torch.cat(qv_merge_scores, dim=1)) 
 
             pred_scores, pred_bboxes = list(), list()
@@ -251,7 +252,8 @@ class SOONet(nn.Module):
             # pred_end = ori_end + ebias * duration
 
             pred_scores = final_scores[np.arange(query_num)[:, None], rank_ids]
-            pred_bboxes = torch.stack([pred_start, pred_end], dim=2)
+            #num_query,all scale selected anchor [400,4个尺度，每个尺度选择100],2
+            pred_bboxes = torch.stack([pred_start, pred_end], dim=2)  
 
             if self.enable_nms:  #false
                 nms_res = list()
@@ -263,7 +265,8 @@ class SOONet(nn.Module):
                 #就使用tensor张量，不用列表数据结构
                 pred_scores = pred_scores[:, :self.topk] 
                 #比scores多最后一个维度表示开始和结束时间
-                pred_bboxes = pred_bboxes[:, :self.topk, :]
+                #是直接在所有的尺度上选择最终的100个,但由于是使用分数排序之后的前100个，因此也具有一定的权重选择
+                pred_bboxes = pred_bboxes[:, :self.topk, :]  
             
             #此处得到的数据全是numpy在CPU上
             merge_scores.extend(pred_scores) 
