@@ -181,7 +181,7 @@ class SOONet(nn.Module):
             event_overlaps_pred.append(torch.stack(overlap_event_predict)) 
 
         loss_dict=self.loss(event_overlaps_pred,timestamps)
-        print("ok")
+        # print("ok")
         return loss_dict
 
     def forward_test(self,
@@ -202,12 +202,7 @@ class SOONet(nn.Module):
         Returns:                                  
             merge_scores  _torch_: _description_: 0维度表示该视频对应的query总数，1维度表示topk个anchor对应的单值分数
             merge_bboxes  _torch_: _description_: 0维度表示该视频对应的query总数，1维度表示topk个anchor个数，2维度表示每个anchor对应的开始结束时间
-        """
-        #在测试的时候就没法使用overlap
-        test_gpu_st=time.time()
-        test_gpu=list()
-        test_cpu=list()
-        
+        """        
         video_events=video_events.squeeze() #先考虑bsz为1，不然unique得到的inverse_indices会有问题
         unique_events, inverse_indices = torch.unique(video_events, return_inverse=True) #也可以直接用这个来作为新的事件表示了，统一移动了
         #[0,2,4,5] [0,0,0,1,1,1,1,2,3,3]
@@ -238,15 +233,43 @@ class SOONet(nn.Module):
         final_event_anchor_feats=final_event_anchor_feats.to(query_feats.device)
         final_event_anchor_feats = final_event_anchor_feats.squeeze(0) 
         final_event_anchor_feats_norm = F.normalize(final_event_anchor_feats, p=2, dim=-1)  # (num_anchors, hidden_dim)
+        
+        #query层面小batch的计算
+        batch_size = self.cfg.TEST.BATCH_SIZE
+        query_num = len(query_feats)
+        num_batches = math.ceil(query_num / batch_size)
+        for bid in range(num_batches): #小query_batch
+            query_feats_norm = F.normalize(query_feats, p=2, dim=-1)  # (batch_query, hidden_dim)
+            similarity_matrix = torch.nn.functional.cosine_similarity(query_feats_norm.unsqueeze(1), final_event_anchor_feats_norm.unsqueeze(0), dim=-1)
+            _, top_indices = torch.topk(similarity_matrix, self.stage2_topk, dim=1)
+            abstract_features=torch.zeros((query_feats.size(0),self.stage2_topk,15,512),device=query_feats.device)
+            for query_index,indices in enumerate(top_indices):
+                for indice_index,indice in enumerate(indices):
+                    event_feat = video_feats[0][inverse_indices==indice]
+                    abstract_features[query_index][indice_index] = self.abstract_encoder(event_feat)
+        
+        
+        
+        
         query_feats_norm = F.normalize(query_feats, p=2, dim=-1)  # (batch_query, hidden_dim)
         similarity_matrix = torch.nn.functional.cosine_similarity(query_feats_norm.unsqueeze(1), final_event_anchor_feats_norm.unsqueeze(0), dim=-1)
         
         #在测试的时候原设想的逻辑是通过模块先来判断事件是否有query检测，然后再从其中进行预测
         #在baseline中的实现是通过相似度来进行选择，都没进行事件的融合，那就直接从相似度分数中选择前top-k个吧，但是需要对相似度分数进行学习，确保这个相似度分数是有效的区分标准
         #对每个查询选择相似度最高的top-k个事件
-        #在测试的环境下使用的是一个视频和其对应的所有的查询，在dataloader中如此设置了
+        #在测试的环境下使用的是一个视频和其对应的所有的查询，在dataloader中如此设置了，会在每一行选择前100个，得到的还是二维矩阵
         _, top_indices = torch.topk(similarity_matrix, self.stage2_topk, dim=1)
         #直接在整个矩阵中得到不重复的元素，得到这一批次的查询共享的事件,每个查询选择100个，总的事件可能就比较多
+        
+        #应该针对每个查询本身构造其对应的100个事件的特征，然后再进行bbox回归，而不是在查询的层面上进行共享
+        #最终应该得到的是一个 num_query,100,15,512 针对每个查询的前100个事件抽象特征
+        abstract_features=torch.zeros((query_feats.size(0),self.stage2_topk,15,512),device=query_feats.device)
+        for query_index,indices in enumerate(top_indices):
+            for indice_index,indice in enumerate(indices):
+                event_feat = video_feats[0][inverse_indices==indice]
+                abstract_features[query_index][indice_index] = self.abstract_encoder(event_feat)
+            
+        
         hit_indices = torch.unique(top_indices)
         
         abstract_events = list() #就是从hit_indices中选择出来的事件
