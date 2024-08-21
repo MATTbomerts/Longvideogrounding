@@ -6,6 +6,7 @@ import coloredlogs
 import torch
 import time 
 from collections import Counter
+import torch.nn as nn
 
 def get_logger(name, log_file_path=None, fmt="%(asctime)s %(name)s: %(message)s",
                print_lev=logging.DEBUG, write_lev=logging.INFO):
@@ -99,7 +100,7 @@ def compute_tiou_vectorized(pred, gt):
     pred_start, pred_end = pred[:, 0], pred[:, 1]
     gt_start, gt_end = gt[0], gt[1]
 
-    inter_start = torch.max(pred_start, gt_start)
+    inter_start = torch.max(pred_start, gt_start)  #广播机制并行化计算
     inter_end = torch.min(pred_end, gt_end)
     inter_len = torch.clamp(inter_end - inter_start, min=0)
 
@@ -130,11 +131,11 @@ class Evaluator(object):
         if len(pred) == 0:
             return correct
 
-        if len(pred) > topk:  #就是直接顺序，没有权重优先之分
+        if len(pred) > topk:  
             pred = pred[:topk]
         
         # 计算所有候选的 tiou 值,从tensor转换到numpy会将数据转换为cpu上
-        ious = compute_tiou_vectorized(pred, gt)
+        ious = compute_tiou_vectorized(pred, gt)  #这部分是批量化计算的
         best_tiou = torch.max(ious).item()
             
         for tiou in self.tiou_threshold:
@@ -153,14 +154,15 @@ class Evaluator(object):
         Return:
             correct: flag of correct at predefined tiou threshold [0.3,0.5,0.7]
         """
-        print("preds,gts:{},{}".format(len(preds),len(gts)))    #CPU/GPU: 72044，72044
-        print("type of preds,gts:{},{}".format(type(preds),type(gts)))
+        # print("preds,gts:{},{}".format(len(preds),len(gts)))    #CPU/GPU: 72044，72044
+        # print("type of preds,gts:{},{}".format(type(preds),type(gts)))
         eval_metric_st=time.time()
         num_instances = float(len(preds)) #应该计算的是所有的query
+        
         # print("num_instances: ",num_instances)
         miou = 0
         all_rank = dict()
-        for tiou in self.tiou_threshold:
+        for tiou in self.tiou_threshold:  #但其实数量不多，直接双重for循环问题也不大
             for topk in self.topks:
                 #top-k和tiou是分别计算的
                 all_rank["R{}-{}".format(topk, tiou)] = 0
@@ -169,8 +171,8 @@ class Evaluator(object):
         #在列表中可以做到不同长度的存储，而张量不行，但是这里的评价标准是视频为单位还是query？
         count=0
         #对于每一个query去单独计算，每一行计算，preds,gts 72044,100,2 ; 72044,2
-        count_st=time.time()
-        for pred,gt in zip(preds, gts): 
+        count_st=time.time()  #这一部分时间计算开销十分大
+        for pred,gt in zip(preds, gts):   #如果直接使用preds和gts的话，会导致内存占用过大，因为preds和gts是所有的query的结果
             #每次拿出一个query进行计算
             for topk in self.topks:
                 #在eval_instance中计算得到的best_iou并没有参与到后续计算中
@@ -178,20 +180,10 @@ class Evaluator(object):
                 for tiou in self.tiou_threshold:
                     all_rank["R{}-{}".format(topk, tiou)] += correct[str(tiou)]
                     
-            # count+=1
-            # if count%1000==0:
-            #     count_ed=time.time()
-            #     print("count:{} ,time:{} ".format(count,count_ed-count_st))
-            #     count_st=time.time()
-                
-                # miou += iou
-        #这个指标不是按照每个视频来计算，而是按照query来计算，有点奇怪
-        print("ending eval compute")
+
         for tiou in self.tiou_threshold: 
             for topk in self.topks:
                 all_rank["R{}-{}".format(topk, tiou)] /= num_instances
-
-        # miou /= float(num_instances)
         
         eval_metric_et=time.time()
         print("eval_metric time: ",eval_metric_et-eval_metric_st)
@@ -282,17 +274,16 @@ class AttentionModule(torch.nn.Module):
         super(AttentionModule, self).__init__()
         self.num_queries = num_queries
         self.input_dim = input_dim
-        
         # 定义查询向量
         self.queries = torch.nn.Parameter(torch.randn(num_queries, input_dim))
-        
         # 线性层，将帧特征映射到注意力分数
-        self.linear = torch.nn.Linear(input_dim, 1)
+        self.linear = torch.nn.Linear(input_dim, input_dim)
         
     def forward(self, event_unit):
         # event_unit 的维度应为 (num_frames, input_dim)
         num_frames = event_unit.size(0)
         
+        event_unit=self.linear(event_unit)
         # 计算查询向量与帧特征的注意力分数
         # queries(num_queries,hidden dim) event_unit(num_frames,hidden dim) -> (num_queries,num_frames)
         query_scores = torch.matmul(self.queries, event_unit.T) 
@@ -307,3 +298,65 @@ class AttentionModule(torch.nn.Module):
         
         # 返回结果
         return attended_features
+    
+class EventQueryClassifier(nn.Module):
+    def __init__(self, input_dim):
+        super(EventQueryClassifier, self).__init__()
+        # 定义一个前馈神经网络
+        self.fc1 = nn.Linear(input_dim, 128)
+        self.fc2 = nn.Linear(128, 1)
+
+    def forward(self, query_feats, event_feats):
+        # 含义没有问题
+        # 扩展维度以便进行广播
+        # 查询在第二个维度扩展事件，表示每个查询对应每个事件复制一次
+        query_feats_expanded = query_feats.unsqueeze(1).expand(-1, event_feats.size(0), -1)
+        # 事件在第一个维度扩展查询，表示每个事件对应每个查询复制一次
+        event_feats_expanded = event_feats.unsqueeze(0).expand(query_feats.size(0), -1, -1)
+
+        # 最终的结果就相当于是 每个查询和每个事件的组合(num_query,num_event)
+        # 拼接查询特征和事件特征 （查询、事件，特征维度*2）
+        combined_feats = torch.cat((query_feats_expanded, event_feats_expanded), dim=-1)
+
+        # 将特征输入到分类器中
+        x = F.relu(self.fc1(combined_feats))
+        output = torch.sigmoid(self.fc2(x)).squeeze(-1)  # 输出命中概率 (k, n)
+        return output
+    
+
+def get_targets(pred_timestamps,hit_indices,classifier_target,frame_timestamps,inverse_indices):
+    """_summary_
+
+    Args:
+        pred_timestamps (_type_): 针对事件预测出来的时间区间
+        hit_indices (_type_): 选择出来的事件
+        classifier_target (_type_): 命中损失
+        frame_timestamps (_type_): 查询标注的时间区间
+        inverse_indices (_type_): 视频帧的事件索引
+
+    Returns:
+        _type_: _description_
+    """
+    hit_ratio=0
+    event_overlaps_pred=list()
+    for query_index,frame_timestamp in enumerate(frame_timestamps): 
+        overlap_events=torch.unique(inverse_indices[frame_timestamp[0]:frame_timestamp[1]+1]) #这个overlap_events是0开始的
+        classifier_target[query_index][overlap_events]=1  #针对每个查询的命中程度
+        overlap_event_predict=[] #针对每个查询都得到的一个目标损失预测
+        flag=0  #如果该query一个事
+        for overlap_event in overlap_events: 
+            #hit_indices和overlap_events都是绝对的事件编号 
+            if overlap_event in hit_indices:  #overlap_event是一个一个进行遍历计算的
+                #选择得到的事件、预测结果的索引和hit_indices存在压缩对应的关系，位序编号保持一致
+                #原本在hit_indices中第1个元素为6(表示第6个事件)，在pred_timestamps中将会变为第一个元素值，对应的是所有事件的第6个
+                #因此应该找hit_indices中值(事件)的索引，在选择后的事件中使用该索引得到该事件的预测值
+                overlap_index = (hit_indices == overlap_event).nonzero(as_tuple=True)[0]
+                overlap_event_predict.append(pred_timestamps[query_index][overlap_index].squeeze())#得到的是绝对的时间，如果不使用squeeze会多一个维度
+                flag=1 #只要有一个命中就可以
+            else: #这里这个逻辑还是比较奇怪，如果预测命中事件没有命中的话
+                overlap_event_predict.append(torch.sigmoid(pred_timestamps[query_index][0].squeeze()))   #额外设置的这个值没有梯度无法更新
+        if flag==1:
+            hit_ratio+=1  #但是这个hit_ratio是共享得到的，不是每个query得到的，因此不准确，需要根据classficate_result来计算
+        event_overlaps_pred.append(torch.stack(overlap_event_predict))
+    return event_overlaps_pred,hit_ratio,classifier_target  
+     

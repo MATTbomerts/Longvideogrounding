@@ -101,12 +101,21 @@ class IOULoss(nn.Module):
         self.cfg = cfg
         self.reduce = cfg.LOSS.REGRESS.REDUCE
     
-    def forward(self, pred,ground_truth):
+    def forward(self, pred,ground_truth,query_mask):
         #原本项目使用的是绝对的时间戳来计算的损失，不是相对[0,1]
+        # pred在训练时是一个列表，每个元素表示该查询的真实标注区间中对应的事件的预测结果（可能有多个）
         total_loss=0
         for i in range(len(ground_truth)):
+            # if query_mask[i]: #如果等于1，则没有命中，该query不参与回归损失计算
+            #     continue   
             true_start, true_end = ground_truth[i]
-            preds = pred[i]  #pred的维度格式有问题
+            preds = pred[i]  #pred的维度格式有问题，因为可能查询的标注区间内有多个事件，所以preds可能有多个
+            # not_all_negative_indices = torch.where(torch.any(preds != -1, dim=1))[0]
+            #  # 如果query_mask[i]为0，说明查询命中了，但是标注区间中不是所有的事件都命中了
+            #  # 因此还是需要分别判断一下，不是所有的预测都有意义
+            #  # 根据这些索引提取对应的行
+            # preds = preds[not_all_negative_indices]
+            
             # 计算交集的开始和结束时间
             inter_start = torch.max(preds[:, 0], true_start) #得到的是多维数据
             inter_end = torch.min(preds[:, 1], true_end)
@@ -120,7 +129,8 @@ class IOULoss(nn.Module):
             iou = (inter_len + 1e-8) / (union_len + 1e-8)
             loss = -torch.log(iou)  #应该是个多维数据
             total_loss+=loss.mean()
-        
+        #也有可能一个都没命中，分母为0，如果全没命中的话，分子也是0，如果一个都没有命中，那么query_mask在一开始就全跳出
+        # return total_loss/torch.sum(query_mask==0)+1e-8 if total_loss>0 else 0
         return total_loss/len(ground_truth)
 
 

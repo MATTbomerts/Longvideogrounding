@@ -22,7 +22,7 @@ os.environ['NCCL_DEBUG'] = 'TRACE'  #添加此行代码，显示更详细的报�
 
 def setup(rank, world_size):
     os.environ['MASTER_ADDR'] = 'localhost'
-    os.environ['MASTER_PORT'] = '12345' #不能这个端口正在被使用，必须是空闲的状态
+    os.environ['MASTER_PORT'] = '12355' #不能这个端口正在被使用，必须是空闲的状态
     os.environ['LOCAL_RANK'] = str(rank) #单机多卡上rank和local_rank是一样的
     torch.cuda.set_device(rank)
     print(f"Process {rank} - init process group")
@@ -117,6 +117,7 @@ def main():
     cleanup()
     
 
+#region
 # def run_training(world_size):
 #     # mp.spawn(main,
 #     #          args=(world_size,),
@@ -124,8 +125,7 @@ def main():
 #     #          join=True)
     
 #     main(ot.local_rank,world_size)
-
-
+#endregion
 
 if __name__ == "__main__":
     
@@ -135,4 +135,4 @@ if __name__ == "__main__":
 
 # CUDA_VISIBLE_DEVICES=6  NCCL_P2P_LEVEL=PIX  python -m  torch.distributed.launch --nproc_per_node=1  --nnodes=1   --exp_path test_out --config_name soonet_mad --mode train  main_distributed.py
 # CUDA_VISIBLE_DEVICES=6 NCCL_P2P_LEVEL=PIX python -m torch.distributed.launch --nproc_per_node=1 --nnodes=1 --use_env main_distributed.py --exp_path test_out --config_name soonet_mad --mode train
-# CUDA_VISIBLE_DEVICES=0 NCCL_P2P_LEVEL=PIX  python -m torch.distributed.launch --nproc_per_node=1  --nnodes=1  --master_port=12345 -m src.main_distributed --exp_path distribute_out --config_name soonet_mad --mode train
+# CUDA_VISIBLE_DEVICES=0 NCCL_P2P_LEVEL=PIX  python -m torch.distributed.launch --nproc_per_node=1  --nnodes=1  --master_port=12355 -m src.main_distributed --exp_path test_out --config_name soonet_mad --mode train

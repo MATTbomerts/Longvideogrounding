@@ -180,51 +180,43 @@ class BboxRegressor(nn.Module):
     def forward(self, ctn_feats, qfeat,mode=None): 
         """_summary_
 
-        Args:
-            ctx_feats (_list_]): 长度为尺度数，每个元素为在该尺度下的(1,selected_anchors,hidden_dim)
-            ctn_feats (_list_):  长度为尺度数，每个元素为在该尺度下的(1,selected_anchors,snippet_length,hidden_dim)
-            qfeat (_torch_): 文本特征
-
-        Returns:
-            _torch_: 维度(query_length, total_num_anchors, 2)
         """
-        #传入的ctx,ctn都是列表，列表中的元素才是特征，每个特征的维度保持一致
-        qfeat = self.fc_q(qfeat)
-        # #(1,total_num_anchors,hidden_dim) 所有尺度下anchor数目加起来，因为anchor没有长度，所以可以直接合并
-        # ctx_feats = torch.cat(ctx_feats, dim=1) 
-        # #模态交互点积操作 (query_length, total_num_anchors, hidden_dim)
-        # ctx_fuse_feats = F.relu(self.fc_ctx(ctx_feats)) * F.relu(qfeat.unsqueeze(1))  #在这里query_length应该指的是bsz
+        qfeat = self.fc_q(qfeat)  #先对query进行线性变换
         ctn_fuse_feats = list()
-        #每个元素(1，selected_anchors, snippet_length, D)
-            #长度就是scale的数目,每一个尺度下的ctn_feat维度为(1,selected_anchors,snippet_length,hidden_dim)
-            #将query的维度广播，video anchor的维度不变(1,selected_anchors,snippet_length,hidden_dim)
-        
-         #这行代码在进行测试的时候由于选择的是所有的查询，内存会不足，但是原本的方法不会存在不足
-         #原本是F.relu(self.fc_ctn(ctn_feats[i])) * F.relu(qfeat.unsqueeze(1).unsqueeze(1))
-         #可能由于在每个尺度下ctn_feats[i]得到的(1,selected_anchors,snippet_length,hidden_dim)长度不超过当前
         if mode=="train": #train的时候正常计算，query_bsz只有7
-            #num_query,num_event,
+            #对抽象的事件特征也进行线性变换
+            #out:num_query,num_event,frames,hidden_dim
+            #qfeat.unsqueeze(1).unsqueeze(1):num_query,1,1,hidden_dim
+            #ctn_feats：num_events,frames,hidden_dim, qfeat: num_query,hidden_dim;out:num_query,num_event,frames,hidden_dim
             out = F.relu(self.fc_ctn(ctn_feats)) * F.relu(qfeat.unsqueeze(1).unsqueeze(1))
             ctn_fuse_feats = self.attn(out)
             out = self.predictor(ctn_fuse_feats)  #num_query,num_event,2
         else: #test的时候小批量计算
+            #region
             #一小批事件一小批计算，
-            bsz_compute=100
-            computer_iternum=math.ceil(ctn_feats.size(0)/bsz_compute)
-            outs=list()
-            for i in range(computer_iternum):
-                out=F.relu(self.fc_ctn(ctn_feats[i*bsz_compute:(i+1)*bsz_compute])) * F.relu(qfeat.unsqueeze(1).unsqueeze(1))
-                ctn_fuse_feats = self.attn(out)
-                out = self.predictor(ctn_fuse_feats)
-                outs.append(out)
-            out=torch.cat(outs,dim=1)
+            # bsz_compute=100
+            # computer_iternum=math.ceil(ctn_feats.size(0)/bsz_compute) #多次一举
+            # # outs=list()
+            # for i in range(computer_iternum):
+            #     out=F.relu(self.fc_ctn(ctn_feats[i*bsz_compute:(i+1)*bsz_compute])) * F.relu(qfeat.unsqueeze(1).unsqueeze(1))
+            #     ctn_fuse_feats = self.attn(out)
+            #     out = self.predictor(ctn_fuse_feats)
+            #     outs.append(out)
+            #endregion
+            #ctn_feats:(num_query,num_event,frames,hidden_dim),qfeat:(num_query,hidden_dim)
+            #计算的过程中qfeat--(num_query,1,1,hidden_dim)-->(num_query,num_event,frames,hidden_dim)
+            #应该这样的操作也没问题，从最后一个维度向前变换
+            #逻辑上的意义就是对每一个query的特征，针对于每一frame辅助一次，得到的(num_query,1,frames,hidden_dim)
+            #然后再对每个事件又将query的特征复制一次，得到(num_query,num_event,frames,hidden_dim)
+            #最终就是每个query的特征与每个事件的每一帧特征进行计算逐元素相乘
             
-            # ctn_fuse_feats = self.attn(out) #在attn中消除snippet_lenghth的原理
-                
-            
-            # #最终结果为 (query_length, total_num_anchors, 2)即对每个anchor都进行了时间边界的预测
-            # out = self.predictor(ctn_fuse_feats)
-            # print("ok")
+            out=F.relu(self.fc_ctn(ctn_feats)) * F.relu(qfeat.unsqueeze(1).unsqueeze(1))
+            ctn_fuse_feats = self.attn(out)
+            out = self.predictor(ctn_fuse_feats)
+            #region
+            # outs.append(out)
+            # out=torch.cat(outs,dim=1)
+            #endregion
         return out
 
 
@@ -237,11 +229,15 @@ class SelfAttention(nn.Module):
         self.fc2 = nn.Linear(hidden_dim//2, 1) #将最后一个hidden_dim转变为1
 
     def forward(self, x):
-        #因为x中包含snippet length维度，会计算得到片段内每一帧与文本查询的相似度，从整体片段为单位来看，需要将维度合并
+        # x : (num_query,num_event,frames,hidden_dim)
+        # 第一步操作相当于将原来的hidden_dim转换为1，计算的是每个查询和每个事件每一帧的某种单一值的关系
         att = self.fc2(self.relu(self.fc1(x))).squeeze(3) 
-        att = F.softmax(att, dim=2).unsqueeze(3)  #又将最后一个维度加回来
+        #softmax:在每个事件的多帧内，计算每一帧的权重
+        att = F.softmax(att, dim=2).unsqueeze(3)  
+        #针对每一个hidden_dim复制512次，意思是帧的权重会复制到帧的每一个hidden_dim上
+        # att ：(num_query,num_event,frames,1) 
         out = torch.sum(x * att, dim=2) #x * att 广播机制，对att最后一个维度复制到x最后一个维度数
-        #通过sum函数将snippet_length维度消除掉，相当于对每一个anchor内部的帧的相似度求和得到一个结果
+        #通过sum函数将frames维度消除掉，相当于对每一个anchor内部的帧的相似度求和得到一个结果
         return out
 
 

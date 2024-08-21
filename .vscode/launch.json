@@ -11,7 +11,7 @@
         
         "args": [
             "--exp_path",
-            "distribute_out",
+            "test_out",
             "--config_name",
             "soonet_mad",
             "--mode",

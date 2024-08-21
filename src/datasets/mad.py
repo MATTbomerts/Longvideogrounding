@@ -29,7 +29,7 @@ class MADDataset(data.Dataset):
         # self.max_anchor_length = self.snippet_length * 2**(self.scale_num - 1)   #对应一维卷积的长度？？请见下文
         if split == "train":  #yaml文件中的两个配置在数据集初始化时使用，而不是在dataloader和训练代码中使用
             epochs = cfg.TRAIN.NUM_EPOCH
-            batch_size = cfg.TRAIN.BATCH_SIZE
+            batch_size = cfg.TRAIN.BATCH_SIZE  #7
         else:
             #测试时，bsz固定设置为100万，以便一次处理一个视频的所有query
             #在训练模式下，选择小的bsz是因为训练需要后向传播和梯度计算，需要额外的内存开销
@@ -62,17 +62,18 @@ class MADDataset(data.Dataset):
         #一共20个epoch,通过epoch的迭代，最终每个视频都会重复读取epoch次
         for i_epoch in range(epochs): #每迭代一轮，在Dataset初始化里面使用，在训练的时候没有显式使用
             batches = list()
+            #如果epochs为1，那么就是只对每个视频进行一次迭代，读到的就是不重复的数据集
             for vid, qids in self.v2q.items(): #对每一个视频而言，视频和query是一对多的关系
                 cqids = qids.copy()  #cqids是对每一个视频的
                 if self.split == "train": #在训练模式下，才会进行填充
-                    random.shuffle(cqids)
-                    if len(cqids) % batch_size != 0:
+                    random.shuffle(cqids)  #每个视频的query都是随机打乱的
+                    if len(cqids) % batch_size != 0: #将每个batch的查询样本都补足到batch_size:7上
                         pad_num = batch_size - len(cqids) % batch_size
                         #意思是每一个视频的query数目都要和batch_size对齐
                         cqids = cqids + cqids[:pad_num]  
-                #表示这个视频的query数目占多少个batch
+                #表示这个视频的query总的数目占多少个batch
                 #在测试的时候bsz100万，因此取上整，结果为1，测试时由于不需要进行pad，因此cqids的长度就是测试数据一个视频本身对应的数据query数目
-                steps = np.math.ceil(len(cqids) / batch_size)
+                steps = np.math.ceil(len(cqids) / batch_size) #训练的时候就是整除，本身就对齐了
                 for j in range(steps):
                     #每一条”样本“都有一个视频和batch_size个query,一共有多少个重复的视频取决于step数和vid数目
                     #batches的元素个数不确定，取决于每个视频对应了多少个query(不固定)，但每个元素都是一个视频和bsz个query组成
@@ -117,12 +118,7 @@ class MADDataset(data.Dataset):
             self.vfeats = h5py.File(self.vfeat_path, 'r') 
         ori_video_feat = np.asarray(self.vfeats[vid])
         ori_video_length, feat_dim = ori_video_feat.shape 
-        
-        
-        # #计算填充后的视频长度，使其成为 max_anchor_length 的整数倍，结合一维卷积滑动窗口的范围来处理？
-        # pad_video_length = int(np.math.ceil(ori_video_length / self.max_anchor_length) * self.max_anchor_length)
-        # pad_video_feat = np.zeros((pad_video_length, feat_dim), dtype=float)
-        # pad_video_feat[:ori_video_length, :] = ori_video_feat
+
         querys = {
             "texts": list(),
             "query_feats": list(),
@@ -133,8 +129,6 @@ class MADDataset(data.Dataset):
             "overlaps": list(),
             "timestamps": list(),
         }
-       
-        # scale_boundaries = [0]
         
         similarity_threshold = 0.9
         #得到视频的事件表示索引编号，这部分得到的是numpy的结果
@@ -149,15 +143,8 @@ class MADDataset(data.Dataset):
             if not self.qfeats:
                 self.qfeats = h5py.File(self.qfeat_path, 'r')
             query_feat = np.asarray(self.qfeats[str(qid)]) #在预处理文件中，一个query的特征，句子级别[cls]，没有单词个数维度
-            
-            
             querys["texts"].append(text) #一个视频对应多个query所以最后是列表的形式，每个元素是一个query
             querys["query_feats"].append(torch.from_numpy(query_feat))
-            # querys["query_masks"].append(torch.from_numpy(query_mask))  #感觉这个query_mask在计算时候还是需要的
-            # querys["anchor_masks"].append(torch.from_numpy(masks))
-            # querys["starts"].append(torch.from_numpy(starts)) #将该视频对应的bsz个query的所有尺度下的anchor的开始时间存入列表
-            # querys["ends"].append(torch.from_numpy(ends))
-            # querys["overlaps"].append(torch.from_numpy(overlaps))  #每个query下所有尺度下所有的anchor的重叠
             querys["timestamps"].append(torch.FloatTensor(timestamps))
         
         instance = {
@@ -165,7 +152,7 @@ class MADDataset(data.Dataset):
             "duration": float(duration), #duration就只有一个
             #因为video特征是经过pad了的，所以有的视频最后一部分是0，但是不影响
             "video_feats": torch.from_numpy(ori_video_feat).unsqueeze(0).float(),   #0号维度为 1 batch
-            # 只用传递事件相对于视频帧的同维度序列，0开始非递减
+            # 只用传递事件相对于视频帧的同维度序列，0开始非递减,并且连续
             "video_events": torch.from_numpy(v_cluster_event).unsqueeze(0).float(),  #保持和视频帧维度一致，只是没有特征维度
             "qids": qids,
             "texts":querys["texts"],
