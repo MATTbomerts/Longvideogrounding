@@ -7,6 +7,8 @@ para_out/
 distribute_out/
 similarity_curve/
 test_out/
+cluster/
+cluster_out/
 
 # Ignore all python file
 test.py
