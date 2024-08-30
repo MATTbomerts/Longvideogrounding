@@ -101,7 +101,7 @@ class IOULoss(nn.Module):
         self.cfg = cfg
         self.reduce = cfg.LOSS.REGRESS.REDUCE
     
-    def forward(self, pred,ground_truth,query_mask):
+    def forward(self, pred,ground_truth):
         #原本项目使用的是绝对的时间戳来计算的损失，不是相对[0,1]
         # pred在训练时是一个列表，每个元素表示该查询的真实标注区间中对应的事件的预测结果（可能有多个）
         total_loss=0

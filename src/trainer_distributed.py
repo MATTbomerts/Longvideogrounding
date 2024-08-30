@@ -24,10 +24,13 @@ class Trainer(object):
         #将模型中的所有 BatchNorm 层转换为 SyncBatchNorm 层。SyncBatchNorm（同步批归一化）
         #是一种在分布式训练中使用的批归一化层，它可以在多 GPU 环境中同步计算统计量，从而提高模型的稳定性和性能。
         self.model = torch.nn.SyncBatchNorm.convert_sync_batchnorm(self.model) 
+        total_params = sum(p.numel() for p in self.model.parameters())
+        print(f'Total parameters: {total_params}')
         # print(rank)
         self.model = self.model.to(rank)
         #最后这个参数会检查模型反向传播有哪些参数没有被使用，在一定程度上会增加时间开销
-        self.model = DDP(self.model, device_ids=[rank],find_unused_parameters=True)  
+        self.model = DDP(self.model, device_ids=[rank],find_unused_parameters=True)
+         
         self.evaluator = Evaluator(tiou_threshold=cfg.TEST.EVAL_TIOUS, topks=cfg.TEST.EVAL_TOPKS)
         self.save_or_load_path = save_or_load_path
         log_dir = os.path.join(save_or_load_path, "log")
@@ -152,7 +155,7 @@ class Trainer(object):
         best_r1 = 0
         batch_st=time.time()
         train_sampler.set_epoch(epoch)
-        for j in range(10):  #j轮迭代，在dataset中设置的num_epoch参数为1，并没有使用多轮的数据
+        for j in range(40):  #j轮迭代，在dataset中设置的num_epoch参数为1，并没有使用多轮的数据
             epoch_hitR=0
             classification_loss=0
             for i, batch in enumerate(tqdm(train_loader, total=len(train_loader), desc="Training")):
@@ -161,16 +164,14 @@ class Trainer(object):
                 # print("rank,i,video_feats shape:",self.rank,i,batch["video_feats"].shape)
                 batch_et = time.time()
                 training_st=time.time()
-                loss_dict,hit_ratio = self.model(
+                loss_dict,hit_ratio = self.model(  #hit_ratio是一个视频七条样本的均值
                     query_feats=batch["query_feats"].to(self.rank), 
                     video_feats=batch["video_feats"].to(self.rank),
                     video_events=batch["video_events"].to(self.rank),
                     timestamps=batch["timestamps"].to(self.rank),
+                    event_feats=batch["event_feats"][0], #其实并没有用到
                 )
                 epoch_hitR+=hit_ratio
-                
-                # for name, param in self.model.named_parameters():  #如果模型中有模块未参与到训练中，在分布式中会报错
-                #     print(name)
                         
 
                 total_loss = loss_dict["total_loss"]  #训练一个小批次之后就更新参数权重(7个query)
@@ -190,7 +191,8 @@ class Trainer(object):
                 training_et=time.time()
 
                 #在记录实验结果时，也是主卡记录就可以，下面这种写法，使用了几张卡，则会记录几次，应该加上判断rank==0
-                if i % cfg.TRAIN.LOG_STEP == 0 and self.rank==0:  #LOG_STEP设置值为200，表示读了200个数据，但是并不能表示对所有数据进行了一轮迭代吧?
+                # if i % cfg.TRAIN.LOG_STEP == 0 and self.rank==0:  #LOG_STEP设置值为200，表示读了200个数据，但是并不能表示对所有数据进行了一轮迭代吧?
+                if i==len(train_loader)-1 and self.rank==0:  #LOG_STEP设置值为200，表示读了200个数据，但是并不能表示对所有数据进行了一轮迭代吧?
                     log_str = f"Step: {i}, "
                     for k, v in loss_dict.items():
                         log_str += "{}: {:.3f}, ".format(k, v)
@@ -220,11 +222,12 @@ class Trainer(object):
                                 "optimizer": self.optimizer.state_dict()
                             }
                             save_path = os.path.join(self.ckpt_dir, "best.pth")
-                            # torch.save(saver_dict, save_path)
+                            torch.save(saver_dict, save_path)
                     
                     write_logfile_et=time.time()
                     # print(f"write logfile time: {write_logfile_et-write_logfile_st}")
                     self.model.train()
+                    print("test hit rate: ",Test_hit_rate)
                 #打印每次的数据加载时间和训练时间
                 training_time = training_et - training_st
                 data_loading_time = batch_et - batch_st
@@ -249,7 +252,7 @@ class Trainer(object):
                 eval_model_st=time.time()
                 #在验证的时候模型中使用top 100,得到的数据都在CPU上
                 #在测试时，目的是为了得到预测出来区间戳
-                bboxes,batch_hit_ratio = self.model(
+                bboxes,batch_hit_ratio = self.model(  #里面计算出来的hit_ratio是一个视频下的所有query的hit_ratio，外面计算的是所有视频的hit_Ratio
                     # query_feats=batch["query_feats"].to(self.rank), 
                     # query_masks=batch["query_masks"].to(self.rank), 
                     # video_feats=batch["video_feats"].to(self.rank),
@@ -266,8 +269,8 @@ class Trainer(object):
                 #每个视频extend后,all_videos,all_query,topk,2【元素个数为all_videos】
                 #也可以进行numpy或者张量化，因为每个视频下query个数不同，但是可以累加，最终表示所有视频query的总和
                 preds.extend(bboxes)  #extend不是append
-                # print("preds shape:",np.array(preds).shape)  #6,100
-                #timestamps是一个query一个，但此处是视频单位，因此会有多个,得到个视频一批的query开始和结束时间
+                # # print("preds shape:",np.array(preds).shape)  #6,100
+                # #timestamps是一个query一个，但此处是视频单位，因此会有多个,得到个视频一批的query开始和结束时间
                 gts.extend([i for i in batch["timestamps"]])
                 
                 all_hit_ratio+=batch_hit_ratio
@@ -282,5 +285,6 @@ class Trainer(object):
         #每个查询得到的事件不一定一样，有[1785,2]也有[1651,2]，但这个表示的是什么呢？好像是所有的查询直接堆积起来前xx个元素表示的是第一个视频的所有查询
         preds=torch.stack(preds,dim=0)
         gts=torch.stack(gts,dim=0)
-        # print("Test hit ratio: ",all_hit_ratio/len(test_loader))
+        # print("2000 Test hit ratio: ",all_hit_ratio/len(test_loader))
+        # return 0,all_hit_ratio/len(test_loader)  #所有视频的查询命中
         return self.evaluator.eval(preds, gts),all_hit_ratio/len(test_loader)

@@ -269,6 +269,40 @@ def events_modify(events):
     return events  #一开始将return放在了for循环里面，导致只返回了最后一个元素的修改结果
 
 
+class AttentionModule1(nn.Module):
+    def __init__(self, input_dim, hidden_dim, query_dim=15):
+        super(AttentionModule1, self).__init__()
+        self.linear = nn.Linear(hidden_dim, hidden_dim)
+        self.queries = nn.Parameter(torch.randn(query_dim, hidden_dim))
+
+    def forward(self, event_unit, event_length):
+        # event_unit 的维度应为 (total_frames, hidden_dim)
+        total_frames, hidden_dim = event_unit.size()
+        num_events = event_length.size(0)
+        
+        # Step 1: 线性变换
+        event_unit = self.linear(event_unit)  # 线性变换，形状保持不变 (total_frames, hidden_dim)
+        
+        # Step 2: 扩展查询矩阵到与 total_frames 匹配的维度
+        expanded_queries = self.queries.unsqueeze(0).expand(total_frames, -1, -1)  # total_frames x 15 x hidden_dim
+        
+        # Step 3: 特征交互编码（逐元素乘积）
+        interaction = event_unit.unsqueeze(1) * expanded_queries  # total_frames x 15 x hidden_dim
+        
+        # Step 4: 生成事件索引
+        event_idx = torch.arange(num_events).to("cuda:0").repeat_interleave(event_length)
+        
+        # Step 5: 使用 scatter_add 聚合帧特征
+        interaction_sum = torch.zeros(num_events, 15, hidden_dim).to(interaction.device)
+        interaction_sum.scatter_add_(0, event_idx.unsqueeze(-1).unsqueeze(-1).expand(-1, 15, hidden_dim), interaction)
+        
+        # Step 6: 计算平均特征
+        length_expanded = event_length.unsqueeze(-1).unsqueeze(-1).expand(-1, 15, hidden_dim)
+        final_features = interaction_sum / length_expanded
+        
+        return final_features
+
+
 class AttentionModule(torch.nn.Module):
     def __init__(self, num_queries, input_dim):
         super(AttentionModule, self).__init__()
@@ -280,21 +314,32 @@ class AttentionModule(torch.nn.Module):
         self.linear = torch.nn.Linear(input_dim, input_dim)
         
     def forward(self, event_unit):
-        # event_unit 的维度应为 (num_frames, input_dim)
-        num_frames = event_unit.size(0)
+        # event_unit 的维度应为 (num_events, num_frames, hidden_dim)
+        num_events, num_frames, hidden_dim = event_unit.size()
         
-        event_unit=self.linear(event_unit)
-        # 计算查询向量与帧特征的注意力分数
-        # queries(num_queries,hidden dim) event_unit(num_frames,hidden dim) -> (num_queries,num_frames)
-        query_scores = torch.matmul(self.queries, event_unit.T) 
+        # 假设 self.linear 已经被调整为 (input_dim -> hidden_dim)
+        event_unit = self.linear(event_unit)  # 线性变换，形状保持不变 (num_events, num_frames, hidden_dim)
+        
+        # 计算查询向量与帧特征的注意力分数(或匹配程度)
+        # 先扩展 queries 的维度，使其形状变为 (num_queries, 1, hidden_dim) -> (1, num_queries, hidden_dim)
+        # 相当于就是根据event的事件数目第一个维度进行了多次的复制
+        queries_expanded = self.queries.unsqueeze(0).expand(num_events, -1, -1)  # (num_events, num_queries, hidden_dim)
+        
+        # 计算 query_scores
+        # event_unit 转置后形状为 (num_events, hidden_dim, num_frames)
+        # queries_expanded：(num_events, num_queries, hidden_dim)
+        # (num_events, num_queries, num_frames) 第一个batch维度不会变，后面两个维度会进行矩阵乘法
+        query_scores = torch.matmul(queries_expanded, event_unit.transpose(1, 2))  
         
         # 计算注意力权重
-        # 每一行上进行 softmax，得到每个查询对每帧的注意力权重(合理)
-        weights = F.softmax(query_scores, dim=1) # 在每个查询向量的维度上进行 softmax
+        # query_scores：(num_events, num_queries, num_frames)
+        weights = F.softmax(query_scores, dim=-1)  # 在最后一个维度 (num_frames) 上进行 softmax (num_events, num_queries, num_frames)
         
-        # 加权平均每帧的特征，得到每个查询的抽象特征
-        #weights(num_queries,num_frames) event_unit(num_frames,hidden dim) -> (num_queries,hidden
-        attended_features = torch.matmul(weights, event_unit)  # (num_queries, input_dim)
+        # 计算加权平均的特征
+        # 需要将 weights 和 event_unit 相乘，并沿着 num_frames 维度求和
+        # weights：(num_events, num_queries, num_frames); event_unit：(num_events, num_frames, hidden_dim)
+        attended_features = torch.matmul(weights, event_unit)  # (num_events, num_queries, hidden_dim)
+        
         
         # 返回结果
         return attended_features

@@ -134,9 +134,22 @@ class MADDataset(data.Dataset):
         #得到视频的事件表示索引编号，这部分得到的是numpy的结果
         v_cluster_event = region_growing_event_clustering(ori_video_feat,similarity_threshold)
         v_cluster_event=events_modify(v_cluster_event)
-        #np.unique 可以直接实现事件的重新编号，得到非递减的编号，解决了事件编号不连续的问题
+        #np.unique 可以直接实现事件的重新编号，得到非递减的编号，解决了事件编号不连续的问题，但此处unique_events是非连续的
         unique_events, v_cluster_event = np.unique(v_cluster_event, return_inverse=True) #也可以直接用这个来作为新的事件表示了，统一移动了
         
+        event_features = []
+        # 遍历每个事件编号
+        for event_id in range(len(unique_events)):
+            # 获取属于当前事件的帧的索引
+            event_indices = np.where(v_cluster_event == event_id)[0]
+            
+            # 提取这些帧对应的特征
+            event_feat = ori_video_feat[event_indices]
+            
+            # 将当前事件的所有特征添加到列表中
+            event_features.append([event_feat,len(event_feat)])
+        
+            
         for qid in qids: #一个视频对应batch_size个query
             text = self.q2v[qid]["text"]  #q2v是一对一
             timestamps = self.q2v[qid]["timestamps"]  #都是一一对应的
@@ -156,6 +169,7 @@ class MADDataset(data.Dataset):
             "video_events": torch.from_numpy(v_cluster_event).unsqueeze(0).float(),  #保持和视频帧维度一致，只是没有特征维度
             "qids": qids,
             "texts":querys["texts"],
+            "event_feats": event_features, #列表形式，每个元素为一个事件及其长度，长度不一，需要通过长度来排序
             #bsz,query_length,hidden_dim
             #对于测试集来讲，每个视频对应的query bsz不是固定的
             #但由于视频层级上的bsz是1，因此不需要涉及对齐操作，一次性就拿了所有的query，没有mini-batch的概念
@@ -174,7 +188,7 @@ class MADDataset(data.Dataset):
     @staticmethod
     def collate_fn(data):
         all_items = data[0].keys()
-        no_tensor_items = ["vid", "duration", "qids", "texts"]
+        no_tensor_items = ["vid", "duration", "qids", "texts","event_feats"]
 
         batch = {k: [d[k] for d in data] for k in all_items}
         for k in all_items:
