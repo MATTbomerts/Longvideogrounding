@@ -78,7 +78,6 @@ class SOONet(nn.Module):
                       video_feats=None,  #在dataloaer中给出了0号维度bsz值为1 
                       video_events=None,
                       timestamps=None,
-                      event_feats=None,
                       **kwargs):
         
         train_st=time.time()
@@ -168,6 +167,10 @@ class SOONet(nn.Module):
         #拿出前1000个事件,按照frames拼接起来,
         
         ab_st=time.time()
+        
+        mem_alloc_before = torch.cuda.memory_allocated()
+        mem_reserved_before = torch.cuda.memory_reserved()
+        
         abstract_feat=torch.zeros(unique_events.size(0),15,512,device=query_feats.device)
         mid_frame=video_feats[0].size(0)//2
         mid_event=inverse_indices[mid_frame]  #事件是从0开始的,因此一共包含1+mid_event个事件
@@ -184,6 +187,16 @@ class SOONet(nn.Module):
         #获取前半部分一共有多少个事件,包含mid_event
         event_length_last=event_duration[mid_event + 1:]  #事件长度使用事件偏好来切片
         abstract_feat[mid_event+1:]=self.abstract_encoder1(event_feats_last,event_length_last)
+        # 记录结束时间
+        
+        mem_alloc_after = torch.cuda.memory_allocated()
+        mem_reserved_after = torch.cuda.memory_reserved()
+        # 计算内存增量（以字节为单位）
+        mem_alloc_diff = mem_alloc_after - mem_alloc_before
+        mem_reserved_diff = mem_reserved_after - mem_reserved_before
+        print(f'Allocated memory difference: {mem_alloc_diff / (1024**2):.2f} MB')
+        print(f'Reserved memory difference: {mem_reserved_diff / (1024**2):.2f} MB')
+        
         ab_et=time.time()
         # print(f"abstract_time: {ab_et-ab_st}")
         event_duration=event_duration/frame_rate  #由原来的帧数,转换为秒数
